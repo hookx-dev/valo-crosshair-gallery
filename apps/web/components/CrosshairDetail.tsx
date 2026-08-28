@@ -8,9 +8,14 @@ import { mockProGear } from "@/data/mock-pro-gear";
 import { CrosshairDetailPreview } from "@/components/CrosshairDetailPreview";
 import { CrosshairCard } from "@/components/CrosshairCard";
 import { CopyCodeButton } from "@/components/CopyCodeButton";
+import { ShareCrosshairButton } from "@/components/ShareCrosshairButton";
 import type { Crosshair } from "@/types";
 
 const CATEGORY_LABEL: Record<string, string> = { pro: "PRO", meme: "MEME", practical: "PRACTICAL" };
+
+function imageUrlFor(code: string): string {
+  return `https://valorant-crosshair-hub.pages.dev/api/crosshair-image?code=${encodeURIComponent(code)}`;
+}
 
 export function CrosshairDetail({ id }: { id: string }) {
   const [crosshair, setCrosshair] = useState<Crosshair | null | undefined>(undefined);
@@ -66,7 +71,17 @@ export function CrosshairDetail({ id }: { id: string }) {
             <code className="clip-corner-sm break-all border border-valo-line bg-valo-panel2 px-4 py-3 font-mono text-sm text-gray-300">
               {crosshair.code}
             </code>
-            <CopyCodeButton code={crosshair.code} className="w-fit" />
+            <div className="flex flex-wrap gap-2">
+              <CopyCodeButton code={crosshair.code} className="w-fit" />
+              <ShareCrosshairButton id={crosshair.id} name={crosshair.name} code={crosshair.code} />
+              <a
+                href={imageUrlFor(crosshair.code)}
+                download={`${crosshair.name}.png`}
+                className="clip-corner-sm border border-valo-line bg-valo-panel px-3 py-1.5 font-display text-xs font-semibold uppercase tracking-wide text-gray-300 transition-colors hover:border-valo-red hover:text-white"
+              >
+                画像を保存
+              </a>
+            </div>
           </div>
 
           <div className="mt-2 flex flex-wrap gap-1.5">
