@@ -52,7 +52,7 @@ export default function LandingPage() {
     <div>
       {/* --- Hero --- */}
       <section className="relative overflow-hidden border-b border-valo-line/80">
-        <div className="relative mx-auto grid max-w-6xl gap-14 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div className="relative mx-auto grid max-w-6xl gap-14 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
           <div>
             <p className="mb-4 font-display text-sm font-semibold tracking-[0.3em] text-valo-red">
               VALORANT CROSSHAIR HUB
