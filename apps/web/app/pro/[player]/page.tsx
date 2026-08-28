@@ -31,7 +31,7 @@ export default function ProDetailPage({ params }: { params: { player: string } }
       </Link>
 
       <div className="mt-6 flex items-center gap-4">
-        {crosshair && <CrosshairPreview code={crosshair.code} />}
+        {crosshair && <CrosshairPreview code={crosshair.code} className="h-40 w-40 shrink-0" zoom={1.8} />}
         <div>
           <p className="font-display text-xs font-semibold tracking-[0.15em] text-valo-red">
             {profile.team}
@@ -71,7 +71,7 @@ export default function ProDetailPage({ params }: { params: { player: string } }
             使用デバイス
           </h2>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="flex flex-col gap-3">
           {profile.gear.map((item) => (
             <div
               key={item.name}
