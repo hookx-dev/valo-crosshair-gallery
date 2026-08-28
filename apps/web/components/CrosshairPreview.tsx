@@ -107,6 +107,7 @@ export function CrosshairPreview({
       style={{ backgroundColor: background ?? "#0f151c" }}
       role="img"
       aria-label={label}
+      shapeRendering="crispEdges"
     >
       <path d="M10 26 V10 H26" fill="none" stroke="#2a3a45" strokeWidth="2" />
       <path d="M102 10 H118 V26" fill="none" stroke="#2a3a45" strokeWidth="2" />

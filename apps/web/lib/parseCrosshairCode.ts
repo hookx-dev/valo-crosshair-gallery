@@ -114,6 +114,12 @@ function clampOpacity(n: number): number {
   return Math.min(1, Math.max(0, n));
 }
 
+// vcrdb.netのパーサーも範囲外の値をここと同じmin/maxにクランプしてから描画している
+// (手入力・古い形式のコードなどで規定範囲外の値が来た場合の見た目崩れを防ぐため)。
+function clampRange(n: number, range: RangeSpec): number {
+  return Math.min(range.max, Math.max(range.min, n));
+}
+
 export function parseCrosshairCode(code: string): CrosshairState {
   const tokens = code.split(";");
   const params: Record<string, string> = {};
@@ -124,17 +130,18 @@ export function parseCrosshairCode(code: string): CrosshairState {
     params[tokens[i]] = tokens[i + 1];
   }
 
-  function readLine(prefix: "0" | "1", d: LineState): LineState {
-    const length = toNumber(params[`${prefix}l`], d.length);
+  function readLine(prefix: "0" | "1", d: LineState, range: (typeof LINE_RANGES)["inner"]): LineState {
+    const length = clampRange(toNumber(params[`${prefix}l`], d.length), range.length);
     return {
       // 表示トグル(b)のデフォルトはON。明示的に"0"が指定された時だけ非表示。
       enabled: params[`${prefix}b`] !== "0",
       opacity: clampOpacity(toNumber(params[`${prefix}a`], d.opacity)),
       length,
       // 垂直方向の長さ(v)が未指定の場合は水平方向と同じ値(連動している状態)とみなす。
-      verticalLength: toNumber(params[`${prefix}v`], length),
-      thickness: toNumber(params[`${prefix}t`], d.thickness),
-      gap: toNumber(params[`${prefix}o`], d.gap),
+      // vcrdb.net側は垂直方向のみ内側・外側とも上限20(水平方向の上限とは別)。
+      verticalLength: clampRange(toNumber(params[`${prefix}v`], length), { min: 0, max: 20, step: 1 }),
+      thickness: clampRange(toNumber(params[`${prefix}t`], d.thickness), range.thickness),
+      gap: clampRange(toNumber(params[`${prefix}o`], d.gap), range.gap),
     };
   }
 
@@ -142,12 +149,15 @@ export function parseCrosshairCode(code: string): CrosshairState {
     color: params.c ?? DEFAULT_CROSSHAIR_STATE.color,
     outlinesEnabled: params.h !== "0",
     outlineOpacity: clampOpacity(toNumber(params.o, DEFAULT_CROSSHAIR_STATE.outlineOpacity)),
-    outlineThickness: toNumber(params.t, DEFAULT_CROSSHAIR_STATE.outlineThickness),
+    outlineThickness: clampRange(
+      toNumber(params.t, DEFAULT_CROSSHAIR_STATE.outlineThickness),
+      OUTLINE_RANGE.thickness
+    ),
     dotEnabled: params.d === "1",
     dotOpacity: clampOpacity(toNumber(params.a, DEFAULT_CROSSHAIR_STATE.dotOpacity)),
-    dotThickness: toNumber(params.z, DEFAULT_CROSSHAIR_STATE.dotThickness),
-    inner: readLine("0", DEFAULT_CROSSHAIR_STATE.inner),
-    outer: readLine("1", DEFAULT_CROSSHAIR_STATE.outer),
+    dotThickness: clampRange(toNumber(params.z, DEFAULT_CROSSHAIR_STATE.dotThickness), DOT_RANGE.thickness),
+    inner: readLine("0", DEFAULT_CROSSHAIR_STATE.inner, LINE_RANGES.inner),
+    outer: readLine("1", DEFAULT_CROSSHAIR_STATE.outer, LINE_RANGES.outer),
   };
 }
 
