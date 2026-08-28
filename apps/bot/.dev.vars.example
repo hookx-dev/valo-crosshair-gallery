@@ -3,3 +3,4 @@
 DISCORD_PUBLIC_KEY=your-discord-app-public-key
 DISCORD_APPLICATION_ID=your-discord-application-id
 DISCORD_BOT_TOKEN=your-discord-bot-token
+FIREBASE_PROJECT_ID=valorant-crosshair-hub

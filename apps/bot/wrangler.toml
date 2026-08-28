@@ -7,5 +7,8 @@ compatibility_date = "2024-09-23"
 #   wrangler secret put DISCORD_APPLICATION_ID
 #   wrangler secret put DISCORD_BOT_TOKEN
 
+[vars]
+FIREBASE_PROJECT_ID = "valorant-crosshair-hub"
+
 [observability]
 enabled = true
