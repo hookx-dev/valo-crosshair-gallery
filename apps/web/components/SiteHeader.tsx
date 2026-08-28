@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BUY_ME_A_COFFEE_URL } from "@/lib/supportLinks";
 
 const NAV = [
   { href: "/", label: "ホーム" },
@@ -46,14 +47,33 @@ export function SiteHeader() {
           >
             投稿する
           </Link>
+          <a
+            href={BUY_ME_A_COFFEE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-display text-xs font-semibold uppercase tracking-wide text-yellow-400 transition-colors hover:text-yellow-300"
+          >
+            ☕ 応援する
+          </a>
         </nav>
 
-        <Link
-          href="/submit"
-          className="clip-corner-sm bg-valo-red px-2.5 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-white sm:hidden"
-        >
-          投稿
-        </Link>
+        <div className="flex items-center gap-2 sm:hidden">
+          <a
+            href={BUY_ME_A_COFFEE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg"
+            aria-label="応援する"
+          >
+            ☕
+          </a>
+          <Link
+            href="/submit"
+            className="clip-corner-sm bg-valo-red px-2.5 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-white"
+          >
+            投稿
+          </Link>
+        </div>
       </div>
     </div>
   );

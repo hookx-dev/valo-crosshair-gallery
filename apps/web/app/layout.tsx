@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 import { Rajdhani, Inter } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import "./globals.css";
+
+const ADSENSE_CLIENT_ID = "ca-pub-2809438929408465";
 
 const display = Rajdhani({
   subsets: ["latin"],
@@ -19,12 +22,21 @@ const body = Inter({
 export const metadata: Metadata = {
   title: "VALO Crosshair Gallery",
   description: "VALORANTのクロスヘア共有ギャラリー (MVP)",
+  other: {
+    "google-adsense-account": ADSENSE_CLIENT_ID,
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col bg-valo-dark font-sans text-white">
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />
