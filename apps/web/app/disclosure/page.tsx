@@ -8,7 +8,10 @@ export default function DisclosurePage() {
       <h1 className="font-display text-3xl font-bold text-white">アフィリエイト表記</h1>
       <div className="mt-8 flex flex-col gap-4 text-sm leading-relaxed text-gray-400">
         <p>
-          当サイト「VALO Crosshair Gallery」は、Amazonアソシエイト・プログラムをはじめとする各種アフィリエイトプログラムに参加しています。
+          当サイト「VALO Crosshair Gallery」は、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。
+        </p>
+        <p>
+          当サイトは、Amazonアソシエイト・プログラムをはじめとする各種アフィリエイトプログラムに参加しています。
         </p>
         <p>
           プロ選手の設定・デバイス紹介ページなど、当サイト内の商品紹介リンクにはアフィリエイトリンクが含まれます。
