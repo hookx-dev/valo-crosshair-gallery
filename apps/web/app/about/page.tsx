@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = { title: "このサイトについて | VALO Crosshair Gallery" };
+export const metadata: Metadata = pageMetadata({
+  title: "このサイトについて | VALO Crosshair Gallery",
+  description: "VALO Crosshair Galleryの運営情報や、サイトの目的について。",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

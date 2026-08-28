@@ -15,14 +15,18 @@ const BACKGROUNDS = [
   { label: "スノー", value: "#e6e9ec" },
 ];
 
-export function CrosshairDetailPreview({ code }: { code: string }) {
+export function CrosshairDetailPreview({ code, name }: { code: string; name?: string }) {
   const [background, setBackground] = useState(BACKGROUNDS[0].value);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="clip-corner overflow-hidden border border-valo-line">
         <div className="flex scale-[2.5] items-center justify-center py-6">
-          <CrosshairPreview code={code} background={background} />
+          <CrosshairPreview
+            code={code}
+            background={background}
+            label={name ? `${name}のプレビュー` : undefined}
+          />
         </div>
       </div>
 

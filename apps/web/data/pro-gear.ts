@@ -5,7 +5,7 @@ import { amazonSearchUrl } from "@/lib/affiliateLinks";
 // 公開情報を基にリサーチ)。選手の乗り換え等で内容が変わる場合があるため、定期的な見直しが必要。
 // affiliateUrlはAmazon商品ページのASINが変わりやすい/取り扱いのない限定モデルもあるため、
 // 商品名でのAmazon検索リンク(amazonSearchUrl)を採用している。
-export const mockProGear: ProGearProfile[] = [
+export const proGearProfiles: ProGearProfile[] = [
   {
     slug: "tenz",
     playerName: "TenZ",

@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = { title: "アフィリエイト表記 | VALO Crosshair Gallery" };
+export const metadata: Metadata = pageMetadata({
+  title: "アフィリエイト表記 | VALO Crosshair Gallery",
+  description: "VALO Crosshair Galleryが参加しているアフィリエイトプログラムについて。",
+  path: "/disclosure",
+});
 
 export default function DisclosurePage() {
   return (

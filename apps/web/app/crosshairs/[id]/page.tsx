@@ -1,10 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CrosshairDetail } from "@/components/CrosshairDetail";
-
-export const metadata: Metadata = { title: "クロスヘア詳細 | VALO Crosshair Gallery" };
+import { pageMetadata } from "@/lib/pageMetadata";
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+
+const FALLBACK_METADATA = pageMetadata({
+  title: "クロスヘア詳細 | VALO Crosshair Gallery",
+  description: "VALORANTのクロスヘア設定の詳細とインポートコード。",
+});
 
 export async function generateStaticParams() {
   if (!PROJECT_ID) return [];
@@ -19,6 +23,26 @@ export async function generateStaticParams() {
     }));
   } catch {
     return [];
+  }
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  if (!PROJECT_ID) return FALLBACK_METADATA;
+  try {
+    const res = await fetch(
+      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/crosshairs/${params.id}`
+    );
+    if (!res.ok) return FALLBACK_METADATA;
+    const doc: { fields?: { name?: { stringValue?: string } } } = await res.json();
+    const name = doc.fields?.name?.stringValue;
+    if (!name) return FALLBACK_METADATA;
+    return pageMetadata({
+      title: `${name} | VALO Crosshair Gallery`,
+      description: `${name}のVALORANTクロスヘア設定とインポートコード。ワンクリックでコピーしてゲームに反映できます。`,
+      path: `/crosshairs/${params.id}`,
+    });
+  } catch {
+    return FALLBACK_METADATA;
   }
 }
 

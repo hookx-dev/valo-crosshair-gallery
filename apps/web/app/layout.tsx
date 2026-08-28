@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Rajdhani, Inter } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { pageMetadata, SITE_URL } from "@/lib/pageMetadata";
 import "./globals.css";
 
 const ADSENSE_CLIENT_ID = "ca-pub-2809438929408465";
@@ -20,8 +21,11 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VALO Crosshair Gallery",
-  description: "VALORANTのクロスヘア共有ギャラリー (MVP)",
+  metadataBase: new URL(SITE_URL),
+  ...pageMetadata({
+    title: "VALO Crosshair Gallery",
+    description: "VALORANTのクロスヘア共有ギャラリー",
+  }),
   other: {
     "google-adsense-account": ADSENSE_CLIENT_ID,
   },

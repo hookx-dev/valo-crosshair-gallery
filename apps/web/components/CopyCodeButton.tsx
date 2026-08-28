@@ -18,6 +18,7 @@ export function CopyCodeButton({ code, className = "" }: { code: string; classNa
   return (
     <button
       onClick={handleCopy}
+      aria-live="polite"
       className={`clip-corner-sm bg-valo-red px-3 py-1.5 font-display text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-red-500 active:bg-red-600 ${className}`}
     >
       {copied ? "コピーしました" : "コードをコピー"}

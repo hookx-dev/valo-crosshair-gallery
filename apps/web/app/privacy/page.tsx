@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = { title: "プライバシーポリシー | VALO Crosshair Gallery" };
+export const metadata: Metadata = pageMetadata({
+  title: "プライバシーポリシー | VALO Crosshair Gallery",
+  description: "VALO Crosshair Galleryのプライバシーポリシー。",
+  path: "/privacy",
+});
 
 const SECTIONS = [
   {

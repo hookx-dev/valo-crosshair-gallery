@@ -1,10 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { mockProGear } from "@/data/mock-pro-gear";
-import { mockCrosshairs } from "@/data/mock-crosshairs";
+import { proGearProfiles } from "@/data/pro-gear";
+import { proCrosshairs } from "@/data/pro-crosshairs";
 import { CrosshairPreview } from "@/components/CrosshairPreview";
+import { pageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = { title: "プロ選手の設定・デバイス一覧 | VALO Crosshair Gallery" };
+export const metadata: Metadata = pageMetadata({
+  title: "プロ選手の設定・デバイス一覧 | VALO Crosshair Gallery",
+  description: "VALORANTプロ選手の感度・DPI・クロスヘア設定と、実際に使用しているマウスやモニターなどの機材情報をまとめています。",
+  path: "/pro",
+});
 
 export default function ProListPage() {
   return (
@@ -16,15 +21,17 @@ export default function ProListPage() {
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {mockProGear.map((profile) => {
-          const crosshair = mockCrosshairs.find((c) => c.id === profile.crosshairId);
+        {proGearProfiles.map((profile) => {
+          const crosshair = proCrosshairs.find((c) => c.id === profile.crosshairId);
           return (
             <Link
               key={profile.slug}
               href={`/pro/${profile.slug}`}
               className="clip-corner flex items-center gap-4 border border-valo-line bg-valo-panel p-4 transition-colors hover:border-valo-red/60"
             >
-              {crosshair && <CrosshairPreview code={crosshair.code} />}
+              {crosshair && (
+                <CrosshairPreview code={crosshair.code} label={`${profile.playerName}のクロスヘアプレビュー`} />
+              )}
               <div>
                 <h2 className="font-display text-lg font-semibold text-white">{profile.playerName}</h2>
                 <p className="text-xs text-gray-500">

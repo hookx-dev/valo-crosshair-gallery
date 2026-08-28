@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCrosshairById, getCrosshairsByCategory } from "@/lib/crosshairs";
-import { mockProGear } from "@/data/mock-pro-gear";
+import { proGearProfiles } from "@/data/pro-gear";
 import { CrosshairDetailPreview } from "@/components/CrosshairDetailPreview";
 import { CrosshairCard } from "@/components/CrosshairCard";
 import { CopyCodeButton } from "@/components/CopyCodeButton";
@@ -45,12 +45,12 @@ export function CrosshairDetail({ id }: { id: string }) {
     notFound();
   }
 
-  const proProfile = mockProGear.find((p) => p.playerName === crosshair.proPlayerName);
+  const proProfile = proGearProfiles.find((p) => p.playerName === crosshair.proPlayerName);
 
   return (
     <>
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-[auto_1fr]">
-        <CrosshairDetailPreview code={crosshair.code} />
+        <CrosshairDetailPreview code={crosshair.code} name={crosshair.name} />
 
         <div className="flex flex-col gap-3">
           <span className="font-display text-xs font-semibold tracking-[0.15em] text-valo-red">
@@ -105,7 +105,7 @@ export function CrosshairDetail({ id }: { id: string }) {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {related.map((c) => (
-              <CrosshairCard key={c.id} crosshair={c} />
+              <CrosshairCard key={c.id} crosshair={c} stacked />
             ))}
           </div>
         </div>

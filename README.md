@@ -1,4 +1,4 @@
-# VALORANT Crosshair Gallery + Discord Bot (MVP)
+# VALORANT Crosshair Gallery + Discord Bot
 
 ## ディレクトリ構成
 
@@ -16,7 +16,7 @@ valo-crosshair-web_dis_app/
 │   │   ├── wrangler.toml
 │   │   ├── .dev.vars.example     # wrangler dev用ローカル変数
 │   │   └── .env.example          # register-commands.ts用
-│   └── web/                  # Next.js (Step3以降で実装、Cloudflare Pages)
+│   └── web/                  # Next.js ギャラリー本体 (Cloudflare Pagesにデプロイ済み)
 ├── packages/
 │   └── shared/src/types.ts   # Crosshair型など共通定義
 ├── scripts/
@@ -93,8 +93,9 @@ Discord Developer Portalの「Interactions Endpoint URL」に設定すれば疎�
 | `DISCORD_APPLICATION_ID` | コマンド登録・API呼び出し | `apps/bot/.env`, `apps/bot/.dev.vars` (本番は `wrangler secret`) |
 | `DISCORD_BOT_TOKEN` | コマンド登録・API呼び出し | `apps/bot/.env`, `apps/bot/.dev.vars` (本番は `wrangler secret`) |
 
-## 次のステップ (未実装)
+## 現在の状況
 
-- `apps/bot/src/commands/crosshair.ts` のFirestore実データ連携（現状はサンプル固定値を返す）
-- `apps/web` のNext.jsギャラリーUI実装 + Cloudflare Pagesデプロイ
-- Cloudflare R2バケット作成・画像アップロード導線
+- `apps/web`: Next.js製ギャラリーサイト。https://valorant-crosshair-hub.pages.dev にデプロイ済み
+  （ホーム / ギャラリー検索 / クロスヘアビルダー / プロ選手設定 / カテゴリ / 投稿フォーム 等）
+- `apps/bot`: Discord Bot。`/crosshair random` `/crosshair pro` コマンドでFirestoreの実データを返す
+- 未対応: Cloudflare R2バケットでの画像アップロード導線（現状はSVGをその場で描画する方式で運用）

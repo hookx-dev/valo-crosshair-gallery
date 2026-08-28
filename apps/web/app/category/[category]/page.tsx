@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CategoryCrosshairList } from "@/components/category/CategoryCrosshairList";
+import { pageMetadata } from "@/lib/pageMetadata";
 import type { CrosshairCategory } from "@/types";
 
 const CATEGORY_META: Record<CrosshairCategory, { label: string; desc: string }> = {
@@ -20,10 +21,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { category: string } }): Metadata {
   if (!isValidCategory(params.category)) return {};
   const meta = CATEGORY_META[params.category];
-  return {
+  return pageMetadata({
     title: `${meta.label}のクロスヘア一覧 | VALO Crosshair Gallery`,
     description: meta.desc,
-  };
+    path: `/category/${params.category}`,
+  });
 }
 
 export default function CategoryPage({ params }: { params: { category: string } }) {

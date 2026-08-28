@@ -3,12 +3,14 @@ import Link from "next/link";
 import { HeroStats } from "@/components/home/HeroStats";
 import { HeroPreviewCards } from "@/components/home/HeroPreviewCards";
 import { CategorySamplePreview } from "@/components/home/CategorySamplePreview";
+import { pageMetadata } from "@/lib/pageMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "VALO Crosshair Gallery | VALORANTのクロスヘア共有・検索サイト",
   description:
     "プロ選手・ネタ系・実用系のVALORANTクロスヘア設定を検索・共有できるギャラリーサイト。ワンクリックでインポートコードをコピーしてゲームにそのまま反映。Discord Botにも対応。",
-};
+  path: "/",
+});
 
 const FEATURES = [
   {
@@ -101,7 +103,7 @@ export default function LandingPage() {
       </section>
 
       {/* --- Features --- */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="mb-10 flex items-center gap-2">
           <span className="h-3 w-1 bg-valo-red" />
           <h2 className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gray-300">
@@ -127,7 +129,7 @@ export default function LandingPage() {
 
       {/* --- Category showcase --- */}
       <section className="border-y border-valo-line/80 bg-valo-panel2/40">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <div className="mb-10 flex items-center gap-2">
             <span className="h-3 w-1 bg-valo-red" />
             <h2 className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gray-300">
@@ -156,7 +158,7 @@ export default function LandingPage() {
       </section>
 
       {/* --- How it works --- */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="mb-10 flex items-center gap-2">
           <span className="h-3 w-1 bg-valo-red" />
           <h2 className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gray-300">
@@ -177,7 +179,7 @@ export default function LandingPage() {
 
       {/* --- Final CTA --- */}
       <section className="border-t border-valo-line/80">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-20 text-center sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-16 text-center sm:px-6">
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
             次に使うクロスヘア、もう決まりましたか？
           </h2>

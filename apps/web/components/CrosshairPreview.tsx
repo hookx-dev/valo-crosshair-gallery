@@ -78,12 +78,15 @@ export function CrosshairPreview({
   background,
   className = "h-20 w-20 shrink-0",
   zoom = 1,
+  label = "クロスヘアのプレビュー",
 }: {
   code: string;
   background?: string;
   className?: string;
   // 1より大きい値でキャンバス中心をズームインし、枠のサイズは変えずにクロスヘア本体だけを大きく見せる。
   zoom?: number;
+  // スクリーンリーダー向けの説明。クロスヘア名がわかる場合は呼び出し側から渡す。
+  label?: string;
 }) {
   const state = parseCrosshairCode(code);
   const color = colorToHex(state.color);
@@ -102,6 +105,8 @@ export function CrosshairPreview({
       viewBox={`0 0 ${SIZE} ${SIZE}`}
       className={className}
       style={{ backgroundColor: background ?? "#0f151c" }}
+      role="img"
+      aria-label={label}
     >
       <path d="M10 26 V10 H26" fill="none" stroke="#2a3a45" strokeWidth="2" />
       <path d="M102 10 H118 V26" fill="none" stroke="#2a3a45" strokeWidth="2" />

@@ -32,7 +32,12 @@ export function CrosshairCard({
         href={`/crosshairs/${crosshair.id}`}
         className={stacked ? "flex flex-col items-center gap-3 pl-1 text-center" : "flex items-center gap-4 pl-1"}
       >
-        <CrosshairPreview code={crosshair.code} className={previewClassName} zoom={previewZoom} />
+        <CrosshairPreview
+          code={crosshair.code}
+          className={previewClassName}
+          zoom={previewZoom}
+          label={`${crosshair.name}のプレビュー`}
+        />
         <div className={stacked ? "flex w-full min-w-0 flex-col items-center gap-1" : "flex min-w-0 flex-col gap-1"}>
           <span className={`w-fit font-display text-xs font-semibold tracking-[0.15em] ${meta.text}`}>
             {meta.label}

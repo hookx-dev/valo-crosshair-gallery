@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCrosshairs } from "@/lib/hooks/useCrosshairs";
+import { CategorySamplePreview } from "@/components/home/CategorySamplePreview";
 
 const CATEGORIES = [
   { slug: "pro", label: "プロ選手", desc: "プロ選手が実際に使用しているクロスヘア設定" },
@@ -20,12 +21,13 @@ export function CategoryGrid() {
           <Link
             key={cat.slug}
             href={`/category/${cat.slug}`}
-            className="clip-corner flex flex-col gap-2 border border-valo-line bg-valo-panel p-5 transition-colors hover:border-valo-red/60"
+            className="clip-corner group flex flex-col items-center gap-3 border border-valo-line bg-valo-panel p-8 text-center transition-colors hover:border-valo-red/60"
           >
+            <CategorySamplePreview category={cat.slug} />
             <span className="font-display text-2xl font-bold text-white">
               {loading ? "--" : String(count).padStart(2, "0")}
             </span>
-            <span className="font-display text-sm font-semibold uppercase tracking-wide text-valo-red">
+            <span className="font-display text-sm font-semibold uppercase tracking-wide text-valo-red group-hover:underline">
               {cat.label}
             </span>
             <p className="text-xs text-gray-500">{cat.desc}</p>

@@ -26,7 +26,7 @@ export function SiteFooter() {
             </Link>
           ))}
         </nav>
-        <p className="text-center text-xs text-gray-600">Hookx Dev — VALO Crosshair Gallery MVP</p>
+        <p className="text-center text-xs text-gray-600">Hookx Dev — VALO Crosshair Gallery</p>
       </div>
     </footer>
   );

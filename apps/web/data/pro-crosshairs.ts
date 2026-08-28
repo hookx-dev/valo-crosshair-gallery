@@ -1,9 +1,9 @@
 import type { Crosshair } from "@/types";
 
-// Firestore未接続のMVPモック。プロ選手のクロスヘアコードは prosettings.net / specs.gg 等の
-// 公開情報を基にした実データ(2026年8月時点)。選手の設定変更・移籍等で内容が古くなる場合が
-// あるため、mock-pro-gear.tsと合わせて定期的な見直しが必要。
-export const mockCrosshairs: Crosshair[] = [
+// プロ選手のクロスヘアコード(/pro配下のページで使用する実データ)。prosettings.net / specs.gg 等の
+// 公開情報を基にしている(2026年8月時点)。選手の設定変更・移籍等で内容が古くなる場合が
+// あるため、pro-gear.tsと合わせて定期的な見直しが必要。
+export const proCrosshairs: Crosshair[] = [
   {
     id: "pro-tenz",
     name: "TenZ Crosshair",

@@ -1,28 +1,30 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { mockProGear } from "@/data/mock-pro-gear";
-import { mockCrosshairs } from "@/data/mock-crosshairs";
+import { proGearProfiles } from "@/data/pro-gear";
+import { proCrosshairs } from "@/data/pro-crosshairs";
 import { CrosshairPreview } from "@/components/CrosshairPreview";
 import { CopyCodeButton } from "@/components/CopyCodeButton";
+import { pageMetadata } from "@/lib/pageMetadata";
 
 export function generateStaticParams() {
-  return mockProGear.map((profile) => ({ player: profile.slug }));
+  return proGearProfiles.map((profile) => ({ player: profile.slug }));
 }
 
 export function generateMetadata({ params }: { params: { player: string } }): Metadata {
-  const profile = mockProGear.find((p) => p.slug === params.player);
+  const profile = proGearProfiles.find((p) => p.slug === params.player);
   if (!profile) return {};
-  return {
+  return pageMetadata({
     title: `${profile.playerName}の設定・使用デバイス | VALO Crosshair Gallery`,
     description: `${profile.playerName}選手のクロスヘア設定と使用デバイス一覧。`,
-  };
+    path: `/pro/${profile.slug}`,
+  });
 }
 
 export default function ProDetailPage({ params }: { params: { player: string } }) {
-  const profile = mockProGear.find((p) => p.slug === params.player);
+  const profile = proGearProfiles.find((p) => p.slug === params.player);
   if (!profile) notFound();
-  const crosshair = mockCrosshairs.find((c) => c.id === profile.crosshairId);
+  const crosshair = proCrosshairs.find((c) => c.id === profile.crosshairId);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -31,7 +33,14 @@ export default function ProDetailPage({ params }: { params: { player: string } }
       </Link>
 
       <div className="mt-6 flex items-center gap-4">
-        {crosshair && <CrosshairPreview code={crosshair.code} className="h-40 w-40 shrink-0" zoom={1.8} />}
+        {crosshair && (
+          <CrosshairPreview
+            code={crosshair.code}
+            className="h-40 w-40 shrink-0"
+            zoom={1.8}
+            label={`${profile.playerName}のクロスヘアプレビュー`}
+          />
+        )}
         <div>
           <p className="font-display text-xs font-semibold tracking-[0.15em] text-valo-red">
             {profile.team}
