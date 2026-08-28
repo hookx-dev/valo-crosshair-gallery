@@ -1,1 +1,1 @@
-export const BUY_ME_A_COFFEE_URL = "https://www.buymeacoffee.com/valocrosshairs";
+export const BUY_ME_A_COFFEE_URL = "https://buymeacoffee.com/hookx.de";
