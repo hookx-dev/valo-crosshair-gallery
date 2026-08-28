@@ -32,9 +32,10 @@ function SubmitForm() {
   const [tagsInput, setTagsInput] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<Crosshair | null>(null);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
 
@@ -57,25 +58,37 @@ function SubmitForm() {
       .filter(Boolean)
       .slice(0, 5);
 
-    // TODO: Firebase接続後はここでFirestoreの`crosshairs`コレクションにaddDocする。
-    // クライアント側のバリデーション/Turnstileはバイパス可能なため、
-    // 書き込み自体はFirestore Security Rules (+ App Check) 側でも再検証する想定。
-    const newCrosshair: Crosshair = {
-      id: `user-${Date.now()}`,
-      name: name.trim(),
-      code: code.trim(),
-      category,
-      proPlayerName: null,
-      submittedBy: authorName.trim() || "匿名",
-      tags,
-      imageUrl: "",
-      createdAt: new Date().toISOString(),
-    };
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          code: code.trim(),
+          category,
+          submittedBy: authorName.trim(),
+          tags,
+          turnstileToken,
+        }),
+      });
 
-    setSubmitted(newCrosshair);
-    setName("");
-    setCode("");
-    setTagsInput("");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError("投稿に失敗しました。時間をおいて再度お試しください。");
+        return;
+      }
+
+      setSubmitted(data.crosshair as Crosshair);
+      setName("");
+      setCode("");
+      setTagsInput("");
+    } catch {
+      setError("通信に失敗しました。ネットワーク環境を確認して再度お試しください。");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -178,9 +191,10 @@ function SubmitForm() {
 
         <button
           type="submit"
-          className="clip-corner-sm w-fit bg-valo-red px-5 py-2 font-display text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-red-500"
+          disabled={submitting}
+          className="clip-corner-sm w-fit bg-valo-red px-5 py-2 font-display text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-red-500 disabled:opacity-60"
         >
-          投稿する
+          {submitting ? "投稿中..." : "投稿する"}
         </button>
       </form>
 
@@ -192,9 +206,6 @@ function SubmitForm() {
               投稿を受け付けました
             </h2>
           </div>
-          <p className="mb-3 text-xs text-gray-500">
-            ※ これはローカルプレビューです（Firestore未接続のため実際には保存されていません）。
-          </p>
           <CrosshairCard crosshair={submitted} />
         </div>
       )}
