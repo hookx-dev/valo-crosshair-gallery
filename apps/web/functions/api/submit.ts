@@ -63,8 +63,9 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   let accessToken: string;
   try {
     accessToken = await getGoogleAccessToken(env);
-  } catch {
-    return json({ error: "auth_failed" }, 500);
+  } catch (err) {
+    // TODO: 動作確認用に詳細を返している。原因特定後は詳細を消して "auth_failed" のみ返す。
+    return json({ error: "auth_failed", detail: err instanceof Error ? err.message : String(err) }, 500);
   }
 
   const id = `user-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
@@ -187,11 +188,15 @@ function base64url(bytes: ArrayBuffer | Uint8Array): string {
 }
 
 async function importPrivateKey(pem: string): Promise<CryptoKey> {
-  const normalized = pem.replace(/\\n/g, "\n");
+  const trimmed = pem.trim().replace(/^"(.*)"$/, "$1");
+  const normalized = trimmed.replace(/\\n/g, "\n");
   const pemContents = normalized
     .replace("-----BEGIN PRIVATE KEY-----", "")
     .replace("-----END PRIVATE KEY-----", "")
     .replace(/\s+/g, "");
+  if (!pemContents) {
+    throw new Error("FIREBASE_PRIVATE_KEY is empty or malformed");
+  }
   const binaryDer = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0));
   return crypto.subtle.importKey(
     "pkcs8",
