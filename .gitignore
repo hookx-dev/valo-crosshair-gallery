@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.next/
+.turbo/
+.wrangler/
+.env
+.env.local
+.dev.vars
+*.log
+serviceAccountKey.json
+*.tsbuildinfo

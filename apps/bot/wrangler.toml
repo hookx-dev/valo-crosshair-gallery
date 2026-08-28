@@ -1,0 +1,11 @@
+name = "valo-crosshair-bot"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+# Secretsはリポジトリに含めず、以下のコマンドで個別に登録する:
+#   wrangler secret put DISCORD_PUBLIC_KEY
+#   wrangler secret put DISCORD_APPLICATION_ID
+#   wrangler secret put DISCORD_BOT_TOKEN
+
+[observability]
+enabled = true
