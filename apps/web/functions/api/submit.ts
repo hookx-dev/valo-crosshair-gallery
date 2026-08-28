@@ -66,18 +66,25 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   } catch (err) {
     // TODO: 動作確認用に詳細を返している。原因特定後は詳細を消して "auth_failed" のみ返す。
     const raw = env.FIREBASE_PRIVATE_KEY ?? "";
+    const trimmed = raw.trim().replace(/^"(.*)"$/, "$1");
+    const normalized = trimmed.replace(/\\n/g, "\n");
+    const pemContents = normalized
+      .replace("-----BEGIN PRIVATE KEY-----", "")
+      .replace("-----END PRIVATE KEY-----", "")
+      .replace(/\s+/g, "");
+    const invalidChars = pemContents.replace(/[A-Za-z0-9+/=]/g, "");
     return json(
       {
         error: "auth_failed",
         detail: err instanceof Error ? err.message : String(err),
         keyInfo: {
-          length: raw.length,
-          startsWithQuote: raw.trim().startsWith('"'),
-          startsWithBegin: raw.includes("-----BEGIN PRIVATE KEY-----"),
-          hasLiteralBackslashN: raw.includes("\\n"),
-          hasRealNewline: raw.includes("\n"),
-          head: raw.slice(0, 15),
-          tail: raw.slice(-15),
+          rawLength: raw.length,
+          pemContentsLength: pemContents.length,
+          lengthMod4: pemContents.length % 4,
+          pemHead: pemContents.slice(0, 12),
+          pemTail: pemContents.slice(-12),
+          invalidCharCount: invalidChars.length,
+          invalidCharsSample: invalidChars.slice(0, 20),
         },
       },
       500
