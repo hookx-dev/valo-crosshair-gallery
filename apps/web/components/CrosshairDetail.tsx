@@ -8,7 +8,6 @@ import { mockProGear } from "@/data/mock-pro-gear";
 import { CrosshairDetailPreview } from "@/components/CrosshairDetailPreview";
 import { CrosshairCard } from "@/components/CrosshairCard";
 import { CopyCodeButton } from "@/components/CopyCodeButton";
-import { ShareCrosshairButton } from "@/components/ShareCrosshairButton";
 import type { Crosshair } from "@/types";
 
 const CATEGORY_LABEL: Record<string, string> = { pro: "PRO", meme: "MEME", practical: "PRACTICAL" };
@@ -73,7 +72,6 @@ export function CrosshairDetail({ id }: { id: string }) {
             </code>
             <div className="flex flex-wrap gap-2">
               <CopyCodeButton code={crosshair.code} className="w-fit" />
-              <ShareCrosshairButton id={crosshair.id} name={crosshair.name} code={crosshair.code} />
               <a
                 href={imageUrlFor(crosshair.code)}
                 download={`${crosshair.name}.png`}
