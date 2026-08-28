@@ -65,7 +65,23 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     accessToken = await getGoogleAccessToken(env);
   } catch (err) {
     // TODO: 動作確認用に詳細を返している。原因特定後は詳細を消して "auth_failed" のみ返す。
-    return json({ error: "auth_failed", detail: err instanceof Error ? err.message : String(err) }, 500);
+    const raw = env.FIREBASE_PRIVATE_KEY ?? "";
+    return json(
+      {
+        error: "auth_failed",
+        detail: err instanceof Error ? err.message : String(err),
+        keyInfo: {
+          length: raw.length,
+          startsWithQuote: raw.trim().startsWith('"'),
+          startsWithBegin: raw.includes("-----BEGIN PRIVATE KEY-----"),
+          hasLiteralBackslashN: raw.includes("\\n"),
+          hasRealNewline: raw.includes("\n"),
+          head: raw.slice(0, 15),
+          tail: raw.slice(-15),
+        },
+      },
+      500
+    );
   }
 
   const id = `user-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
