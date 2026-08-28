@@ -66,7 +66,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   } catch (err) {
     // TODO: 動作確認用に詳細を返している。原因特定後は詳細を消して "auth_failed" のみ返す。
     const raw = env.FIREBASE_PRIVATE_KEY ?? "";
-    const trimmed = raw.trim().replace(/^"(.*)"$/, "$1");
+    const trimmed = cleanEnvValue(raw);
     const normalized = trimmed.replace(/\\n/g, "\n");
     const pemContents = normalized
       .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -170,7 +170,7 @@ async function getGoogleAccessToken(env: Env): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
   const claim = {
-    iss: env.FIREBASE_CLIENT_EMAIL,
+    iss: cleanEnvValue(env.FIREBASE_CLIENT_EMAIL),
     scope: "https://www.googleapis.com/auth/datastore",
     aud: "https://oauth2.googleapis.com/token",
     exp: now + 3600,
@@ -210,8 +210,19 @@ function base64url(bytes: ArrayBuffer | Uint8Array): string {
   return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+// サービスアカウントJSONの値をそのまま(末尾のカンマや前後の引用符ごと)貼り付けても
+// 動くように、Cloudflareの環境変数値からPEM本体を安全に取り出す。
+function cleanEnvValue(raw: string): string {
+  let s = raw.trim();
+  s = s.replace(/,\s*$/, ""); // JSONフィールドをそのままコピーした場合の末尾カンマ
+  if (s.startsWith('"') && s.endsWith('"')) {
+    s = s.slice(1, -1);
+  }
+  return s.trim();
+}
+
 async function importPrivateKey(pem: string): Promise<CryptoKey> {
-  const trimmed = pem.trim().replace(/^"(.*)"$/, "$1");
+  const trimmed = cleanEnvValue(pem);
   const normalized = trimmed.replace(/\\n/g, "\n");
   const pemContents = normalized
     .replace("-----BEGIN PRIVATE KEY-----", "")
