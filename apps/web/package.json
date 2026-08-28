@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
     "firebase": "^11.10.0",
     "next": "^14.2.15",
     "react": "^18.3.1",

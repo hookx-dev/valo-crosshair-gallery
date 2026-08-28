@@ -6,6 +6,7 @@ const SITE_BASE_URL = "https://valorant-crosshair-hub.pages.dev";
 
 function toEmbedResponse(crosshair: Crosshair) {
   const detailUrl = `${SITE_BASE_URL}/crosshairs/${crosshair.id}`;
+  const imageUrl = `${SITE_BASE_URL}/api/crosshair-image?code=${encodeURIComponent(crosshair.code)}`;
   return Response.json({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
@@ -14,6 +15,7 @@ function toEmbedResponse(crosshair: Crosshair) {
           title: crosshair.name,
           description: `インポートコード:\n\`\`\`${crosshair.code}\`\`\``,
           url: detailUrl,
+          image: { url: imageUrl },
         },
       ],
       content: `詳細ページ: ${detailUrl}`,
