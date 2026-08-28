@@ -29,6 +29,30 @@ const commands = [
           },
         ],
       },
+      {
+        name: "gear",
+        description: "プロ選手の感度・使用デバイスを取得する",
+        type: 1, // SUB_COMMAND
+        options: [
+          {
+            name: "player",
+            description: "選手名",
+            type: 3, // STRING
+            required: true,
+          },
+          {
+            name: "info",
+            description: "表示する情報(未指定なら両方)",
+            type: 3, // STRING
+            required: false,
+            choices: [
+              { name: "感度", value: "sensitivity" },
+              { name: "デバイス", value: "device" },
+              { name: "感度・デバイス両方", value: "both" },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
