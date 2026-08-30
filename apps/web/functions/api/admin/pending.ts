@@ -45,7 +45,8 @@ export async function onRequestGet(context: { request: Request; env: Env }): Pro
               value: { stringValue: "pending" },
             },
           },
-          orderBy: [{ field: { fieldPath: "createdAt" }, direction: "DESCENDING" }],
+          // where(等価)とorderBy(別フィールド)の組み合わせはFirestoreの複合インデックスが
+          // 必要になるため、並び替えはFirestore側に任せずここで行う。
           limit: 100,
         },
       }),
@@ -59,7 +60,8 @@ export async function onRequestGet(context: { request: Request; env: Env }): Pro
   const rows = (await runQueryRes.json()) as { document?: { fields: Record<string, unknown> } }[];
   const crosshairs = rows
     .filter((row) => row.document)
-    .map((row) => fromFirestoreFields(row.document!.fields));
+    .map((row) => fromFirestoreFields(row.document!.fields))
+    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
 
   return json({ ok: true, crosshairs });
 }
