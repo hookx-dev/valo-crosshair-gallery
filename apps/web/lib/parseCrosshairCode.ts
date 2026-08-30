@@ -37,6 +37,12 @@ export const COLOR_OPTIONS = [
 
 const COLOR_HEX: Record<string, string> = Object.fromEntries(COLOR_OPTIONS.map((c) => [c.value, c.hex]));
 
+// vcrdb.netはプレビュー背景に実際のマップテクスチャ(コンクリート等の中間トーン)を使っており、
+// 黒アウトラインが常にはっきり見える。サイトのパネル色(#0f151c)をそのまま背景に使うと
+// 黒アウトラインがほぼ同化して見えなくなってしまうため、コンクリート相当の中間グレーを
+// プレビューのデフォルト背景として使う。
+export const DEFAULT_PREVIEW_BACKGROUND = "#8a8a86";
+
 export interface RangeSpec {
   min: number;
   max: number;

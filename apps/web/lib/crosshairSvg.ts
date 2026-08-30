@@ -1,4 +1,4 @@
-import { colorToHex, parseCrosshairCode, type LineState } from "@/lib/parseCrosshairCode";
+import { colorToHex, DEFAULT_PREVIEW_BACKGROUND, parseCrosshairCode, type LineState } from "@/lib/parseCrosshairCode";
 
 // CrosshairPreview.tsx(ブラウザ向けのJSX版)と全く同じ計算式を、
 // サーバー側(画像生成用)でも使えるようプレーンなSVG文字列組み立てに移植したもの。
@@ -59,7 +59,7 @@ function renderLineGroup(
 
 export function buildCrosshairSvg(code: string, options?: { zoom?: number; background?: string }): string {
   const zoom = options?.zoom ?? 2.2;
-  const background = options?.background ?? "#0f151c";
+  const background = options?.background ?? DEFAULT_PREVIEW_BACKGROUND;
   const state = parseCrosshairCode(code);
   const color = colorToHex(state.color);
   const outline = {

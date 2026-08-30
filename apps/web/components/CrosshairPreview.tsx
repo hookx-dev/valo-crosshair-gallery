@@ -1,4 +1,4 @@
-import { colorToHex, parseCrosshairCode, type LineState } from "@/lib/parseCrosshairCode";
+import { colorToHex, DEFAULT_PREVIEW_BACKGROUND, parseCrosshairCode, type LineState } from "@/lib/parseCrosshairCode";
 
 // vcrdb.net(https://vcrdb.net)のクロスヘアビルダーが実際に使っている描画関数
 // (公開JSバンドル内の`renderCrosshair`)を解析し、その計算式をそのまま移植している。
@@ -104,7 +104,7 @@ export function CrosshairPreview({
     <svg
       viewBox={`0 0 ${SIZE} ${SIZE}`}
       className={className}
-      style={{ backgroundColor: background ?? "#0f151c" }}
+      style={{ backgroundColor: background ?? DEFAULT_PREVIEW_BACKGROUND }}
       role="img"
       aria-label={label}
       shapeRendering="crispEdges"

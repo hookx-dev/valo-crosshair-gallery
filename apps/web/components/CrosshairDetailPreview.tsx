@@ -3,12 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CrosshairPreview } from "./CrosshairPreview";
+import { DEFAULT_PREVIEW_BACKGROUND } from "@/lib/parseCrosshairCode";
 
 // 背景色によって視認性が変わるため、代表的なマップの壁面色を模した色見本を用意している。
 // 実際のゲーム画面のスクリーンショットは著作権上使えないため、単色の近似で代用。
+// vcrdb.netに合わせ、黒アウトラインが常にはっきり見えるコンクリート(中間グレー)を
+// デフォルトにしている(ダークだとアウトラインがほぼ同化して見えなくなるため)。
 const BACKGROUNDS = [
+  { label: "コンクリート", value: DEFAULT_PREVIEW_BACKGROUND },
   { label: "ダーク", value: "#0f151c" },
-  { label: "コンクリート", value: "#8a8a86" },
   { label: "サンド", value: "#c2a878" },
   { label: "フォレスト", value: "#2f4a34" },
   { label: "スカイ", value: "#7fb2d6" },
