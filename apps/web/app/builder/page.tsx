@@ -101,6 +101,7 @@ function randomLine(range: (typeof LINE_RANGES)["inner"]): LineState {
 function randomizeState(): CrosshairState {
   return {
     color: String(Math.floor(Math.random() * 8)),
+    customHex: DEFAULT_CROSSHAIR_STATE.customHex,
     outlinesEnabled: true,
     outlineOpacity: DEFAULT_CROSSHAIR_STATE.outlineOpacity,
     outlineThickness: DEFAULT_CROSSHAIR_STATE.outlineThickness,

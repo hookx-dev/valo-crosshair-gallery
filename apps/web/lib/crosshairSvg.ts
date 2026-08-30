@@ -61,7 +61,7 @@ export function buildCrosshairSvg(code: string, options?: { zoom?: number; backg
   const zoom = options?.zoom ?? 2.2;
   const background = options?.background ?? DEFAULT_PREVIEW_BACKGROUND;
   const state = parseCrosshairCode(code);
-  const color = colorToHex(state.color);
+  const color = colorToHex(state.color, state.customHex);
   const outline = {
     enabled: state.outlinesEnabled,
     opacity: state.outlineOpacity,

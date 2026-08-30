@@ -84,13 +84,6 @@ export function CrosshairPreview({
   className = "h-20 w-20 shrink-0",
   zoom = 1,
   label = "クロスヘアのプレビュー",
-  // 実際のゲーム解像度換算でどれくらい小さく見えるかを再現するモード用。
-  // 指定すると枠自体をこのピクセル数(例: 1920x1080)として扱い、
-  // クロスヘアの太さ・長さは一切スケールせず絶対px数のまま中央に描く。
-  canvasWidth = SIZE,
-  canvasHeight = SIZE,
-  // 実寸モードではHUD風の角ブラケットが不自然に浮いてしまうため隠せるようにする。
-  showCorners = true,
 }: {
   code: string;
   background?: string;
@@ -99,12 +92,9 @@ export function CrosshairPreview({
   zoom?: number;
   // スクリーンリーダー向けの説明。クロスヘア名がわかる場合は呼び出し側から渡す。
   label?: string;
-  canvasWidth?: number;
-  canvasHeight?: number;
-  showCorners?: boolean;
 }) {
   const state = parseCrosshairCode(code);
-  const color = colorToHex(state.color);
+  const color = colorToHex(state.color, state.customHex);
   const outline = {
     enabled: state.outlinesEnabled,
     opacity: state.outlineOpacity,
@@ -115,33 +105,24 @@ export function CrosshairPreview({
   const dotOffset = CENTER - Math.ceil(dotSide / 2);
   const dotRect: Rect = { x: dotOffset, y: dotOffset, width: dotSide, height: dotSide };
 
-  // クロスヘア本体(128基準の座標系)を、実際のキャンバスサイズの中央に配置し直す。
-  // zoom以外のスケーリングは行わないため、太さ・長さは常に絶対px数のまま保たれる。
-  const offsetX = canvasWidth / 2;
-  const offsetY = canvasHeight / 2;
-
   return (
     <svg
-      viewBox={`0 0 ${canvasWidth} ${canvasHeight}`}
+      viewBox={`0 0 ${SIZE} ${SIZE}`}
       className={className}
       style={{ backgroundColor: background ?? DEFAULT_PREVIEW_BACKGROUND }}
       role="img"
       aria-label={label}
       shapeRendering="crispEdges"
     >
-      {showCorners && (
-        <>
-          <path d="M10 26 V10 H26" fill="none" stroke="#2a3a45" strokeWidth="2" />
-          <path d="M102 10 H118 V26" fill="none" stroke="#2a3a45" strokeWidth="2" />
-          <path d="M118 102 V118 H102" fill="none" stroke="#2a3a45" strokeWidth="2" />
-          <path d="M26 118 H10 V102" fill="none" stroke="#2a3a45" strokeWidth="2" />
-        </>
-      )}
+      <path d="M10 26 V10 H26" fill="none" stroke="#2a3a45" strokeWidth="2" />
+      <path d="M102 10 H118 V26" fill="none" stroke="#2a3a45" strokeWidth="2" />
+      <path d="M118 102 V118 H102" fill="none" stroke="#2a3a45" strokeWidth="2" />
+      <path d="M26 118 H10 V102" fill="none" stroke="#2a3a45" strokeWidth="2" />
 
       {/* zoomは四隅のコーナーブラケットには適用せず、クロスヘア本体だけを中心基準で拡大する */}
       {/* vcrdb.netの描画順は inner→dot→outer(この順で後勝ち)。ドットが大きい/gapが狭い設定では
           重なった部分の見た目が順序で変わるため、当サイトも同じ順序で描く。 */}
-      <g transform={`translate(${offsetX} ${offsetY}) scale(${zoom}) translate(${-CENTER} ${-CENTER})`}>
+      <g transform={`translate(${CENTER} ${CENTER}) scale(${zoom}) translate(${-CENTER} ${-CENTER})`}>
         {renderLineGroup(state.inner, color, outline, "inner")}
 
         {state.dotEnabled && (

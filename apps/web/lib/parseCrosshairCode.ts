@@ -85,6 +85,9 @@ export interface LineState {
 
 export interface CrosshairState {
   color: string;
+  // color==="8"(Custom)の時に使う実際の色。vcrdb.netの"u"パラメータ(例: "112233FF")の
+  // 先頭6桁(RRGGBB、末尾2桁はアルファなので無視)をそのまま持つ。
+  customHex: string;
   outlinesEnabled: boolean;
   outlineOpacity: number;
   outlineThickness: number;
@@ -97,6 +100,7 @@ export interface CrosshairState {
 
 export const DEFAULT_CROSSHAIR_STATE: CrosshairState = {
   color: "0",
+  customHex: "FFFFFF",
   outlinesEnabled: true,
   outlineOpacity: 0.5,
   outlineThickness: 1,
@@ -107,7 +111,10 @@ export const DEFAULT_CROSSHAIR_STATE: CrosshairState = {
   outer: { enabled: true, opacity: 0.35, length: 2, verticalLength: 2, thickness: 2, gap: 10 },
 };
 
-export function colorToHex(color: string): string {
+// color==="8"(Custom)の時はcustomHexを使う。vcrdb.netのrenderCrosshair()も
+// `8==e.color ? "#"+e.hexColor.value.substr(0,6) : n[e.color]` という同じ分岐をしている。
+export function colorToHex(color: string, customHex: string = DEFAULT_CROSSHAIR_STATE.customHex): string {
+  if (color === "8") return `#${customHex}`;
   return COLOR_HEX[color] ?? COLOR_HEX["1"];
 }
 
@@ -138,21 +145,33 @@ export function parseCrosshairCode(code: string): CrosshairState {
 
   function readLine(prefix: "0" | "1", d: LineState, range: (typeof LINE_RANGES)["inner"]): LineState {
     const length = clampRange(toNumber(params[`${prefix}l`], d.length), range.length);
+    // "g"(vertical.enabled、ビルダーの"Link sliders"解除フラグ)が明示的に"1"でない限り、
+    // "v"(垂直方向の長さ)が指定されていても無視して水平方向と同じ値を使う。
+    // vcrdb.netのrenderCrosshair()も `line.vertical.enabled ? line.vertical.length : length` という
+    // 同じ分岐をしており、vが単独で来ても素通りさせない。
+    const verticalEnabled = params[`${prefix}g`] === "1";
+    const verticalLength = verticalEnabled
+      ? clampRange(toNumber(params[`${prefix}v`], length), { min: 0, max: 20, step: 1 })
+      : length;
     return {
       // 表示トグル(b)のデフォルトはON。明示的に"0"が指定された時だけ非表示。
       enabled: params[`${prefix}b`] !== "0",
       opacity: clampOpacity(toNumber(params[`${prefix}a`], d.opacity)),
       length,
-      // 垂直方向の長さ(v)が未指定の場合は水平方向と同じ値(連動している状態)とみなす。
-      // vcrdb.net側は垂直方向のみ内側・外側とも上限20(水平方向の上限とは別)。
-      verticalLength: clampRange(toNumber(params[`${prefix}v`], length), { min: 0, max: 20, step: 1 }),
+      verticalLength,
       thickness: clampRange(toNumber(params[`${prefix}t`], d.thickness), range.thickness),
       gap: clampRange(toNumber(params[`${prefix}o`], d.gap), range.gap),
     };
   }
 
+  // "u"パラメータ(例: "112233FF")の先頭6桁がRRGGBB。6〜8桁の16進以外は無視してデフォルトに戻す
+  // (vcrdb.netのパーサーも同じ形式チェックをして、不正な値は警告を出して無視している)。
+  const rawHex = params.u ?? "";
+  const customHex = /^[0-9a-fA-F]{6,8}$/.test(rawHex) ? rawHex.slice(0, 6).toUpperCase() : DEFAULT_CROSSHAIR_STATE.customHex;
+
   return {
     color: params.c ?? DEFAULT_CROSSHAIR_STATE.color,
+    customHex,
     outlinesEnabled: params.h !== "0",
     outlineOpacity: clampOpacity(toNumber(params.o, DEFAULT_CROSSHAIR_STATE.outlineOpacity)),
     outlineThickness: clampRange(
@@ -169,6 +188,9 @@ export function parseCrosshairCode(code: string): CrosshairState {
 
 export function serializeCrosshairState(state: CrosshairState): string {
   const parts: (string | number)[] = ["0", "P", "c", state.color];
+  if (state.color === "8") {
+    parts.push("u", `${state.customHex}FF`);
+  }
 
   parts.push("h", state.outlinesEnabled ? 1 : 0);
   if (state.outlinesEnabled) {
