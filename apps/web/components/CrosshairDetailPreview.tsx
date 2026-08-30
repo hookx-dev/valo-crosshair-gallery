@@ -28,6 +28,7 @@ export function CrosshairDetailPreview({ code, name }: { code: string; name?: st
           <CrosshairPreview
             code={code}
             background={background}
+            className="h-32 w-32 shrink-0"
             label={name ? `${name}のプレビュー` : undefined}
           />
         </div>
