@@ -34,6 +34,7 @@ function SubmitForm() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<Crosshair | null>(null);
+  const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -81,6 +82,7 @@ function SubmitForm() {
       }
 
       setSubmitted(data.crosshair as Crosshair);
+      setSubmittedMessage(typeof data.message === "string" ? data.message : null);
       setName("");
       setCode("");
       setTagsInput("");
@@ -96,7 +98,7 @@ function SubmitForm() {
       <p className="font-display text-xs font-semibold tracking-[0.3em] text-valo-red">SUBMIT</p>
       <h1 className="mt-2 font-display text-3xl font-bold text-white">クロスヘアを投稿する</h1>
       <p className="mt-2 text-sm text-gray-400">
-        あなたのお気に入りのクロスヘア設定をシェアしましょう。投稿は即時公開されますが、内容によっては後から削除されることがあります。
+        あなたのお気に入りのクロスヘア設定をシェアしましょう。投稿は運営の確認後にギャラリーへ公開されます。
         プロ選手のクロスヘアとしての投稿は現在受け付けていません。
       </p>
 
@@ -206,12 +208,13 @@ function SubmitForm() {
               投稿を受け付けました
             </h2>
           </div>
+          {submittedMessage && <p className="mb-4 text-sm text-gray-400">{submittedMessage}</p>}
           <CrosshairCard crosshair={submitted} />
         </div>
       )}
 
       <p className="mt-10 text-[11px] text-gray-600">
-        投稿はサーバー側でも再検証されたうえで即時公開されます。不適切な投稿は事後に削除される場合があります。詳しくは
+        投稿はサーバー側で検証されたのち、運営の確認を経てギャラリーに公開されます。内容によっては公開されない場合があります。詳しくは
         <Link href="/privacy" className="mx-1 underline hover:text-gray-400">
           プライバシーポリシー
         </Link>
