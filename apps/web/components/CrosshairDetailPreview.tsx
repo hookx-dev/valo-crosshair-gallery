@@ -18,21 +18,66 @@ const BACKGROUNDS = [
   { label: "スノー", value: "#e6e9ec" },
 ];
 
+// 実寸プレビューは1920x1080(フルHD)を基準に、太さ・長さを一切拡大せず絶対px数のまま
+// 中央に描く。実際のゲーム画面で見えるのと同じくらい小さく・見にくくなるが、それが正しい。
+const REAL_CANVAS_WIDTH = 1920;
+const REAL_CANVAS_HEIGHT = 1080;
+
 export function CrosshairDetailPreview({ code, name }: { code: string; name?: string }) {
   const [background, setBackground] = useState(BACKGROUNDS[0].value);
+  const [mode, setMode] = useState<"zoom" | "real">("zoom");
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex w-fit gap-1 border border-valo-line p-1">
+        <button
+          type="button"
+          onClick={() => setMode("zoom")}
+          className={`px-2 py-1 font-display text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+            mode === "zoom" ? "bg-valo-red text-white" : "text-gray-500 hover:text-gray-300"
+          }`}
+        >
+          拡大表示
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("real")}
+          className={`px-2 py-1 font-display text-[10px] font-semibold uppercase tracking-widest transition-colors ${
+            mode === "real" ? "bg-valo-red text-white" : "text-gray-500 hover:text-gray-300"
+          }`}
+        >
+          実寸プレビュー(1920x1080換算)
+        </button>
+      </div>
+
       <div className="clip-corner overflow-hidden border border-valo-line">
-        <div className="flex items-center justify-center py-6">
-          <CrosshairPreview
-            code={code}
-            background={background}
-            className="h-32 w-32 shrink-0"
-            label={name ? `${name}のプレビュー` : undefined}
-          />
+        <div className={mode === "zoom" ? "flex items-center justify-center py-6" : "w-full"}>
+          {mode === "zoom" ? (
+            <CrosshairPreview
+              code={code}
+              background={background}
+              className="h-32 w-32 shrink-0"
+              label={name ? `${name}のプレビュー` : undefined}
+            />
+          ) : (
+            <CrosshairPreview
+              code={code}
+              background={background}
+              className="aspect-video w-full"
+              canvasWidth={REAL_CANVAS_WIDTH}
+              canvasHeight={REAL_CANVAS_HEIGHT}
+              showCorners={false}
+              label={name ? `${name}の実寸プレビュー` : undefined}
+            />
+          )}
         </div>
       </div>
+
+      {mode === "real" && (
+        <p className="text-[11px] text-gray-500">
+          フルHD(1920×1080)のモニターでプレイした場合の見た目の大きさに合わせています。実際のゲーム内ではこの程度の小ささになります。
+        </p>
+      )}
 
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-display text-[10px] font-semibold uppercase tracking-widest text-gray-500">
