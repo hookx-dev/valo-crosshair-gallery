@@ -109,7 +109,7 @@ export default function GalleryPage() {
       {!error && !loading && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((crosshair) => (
-            <CrosshairCard key={crosshair.id} crosshair={crosshair} previewZoom={1.8} stacked />
+            <CrosshairCard key={crosshair.id} crosshair={crosshair} stacked />
           ))}
         </div>
       )}

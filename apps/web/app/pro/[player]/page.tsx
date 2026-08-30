@@ -37,7 +37,6 @@ export default function ProDetailPage({ params }: { params: { player: string } }
           <CrosshairPreview
             code={crosshair.code}
             className="h-40 w-40 shrink-0"
-            zoom={1.8}
             label={`${profile.playerName}のクロスヘアプレビュー`}
           />
         )}
