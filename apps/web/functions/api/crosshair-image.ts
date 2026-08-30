@@ -24,7 +24,7 @@ export async function onRequestGet(context: { request: Request }): Promise<Respo
 
   try {
     await ensureWasmInit();
-    const svg = buildCrosshairSvg(code, { zoom: 2.6 });
+    const svg = buildCrosshairSvg(code, { zoom: 1 });
     const resvg = new Resvg(svg, { fitTo: { mode: "width", value: 512 } });
     const png = new Uint8Array(resvg.render().asPng());
 
