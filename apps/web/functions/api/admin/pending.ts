@@ -54,7 +54,7 @@ export async function onRequestGet(context: { request: Request; env: Env }): Pro
   );
 
   if (!runQueryRes.ok) {
-    return json({ error: "firestore_query_failed" }, 502);
+    return json({ error: "firestore_query_failed", detail: await runQueryRes.text() }, 502);
   }
 
   const rows = (await runQueryRes.json()) as { document?: { fields: Record<string, unknown> } }[];
