@@ -87,8 +87,9 @@ export function buildCrosshairSvg(code: string, options?: { zoom?: number; backg
     <path d="M26 118 H10 V102" fill="none" stroke="#2a3a45" stroke-width="2" />
   `;
 
+  // vcrdb.netの描画順(inner→dot→outer、後勝ち)に合わせる。CrosshairPreview.tsxと揃えること。
   const body =
-    renderLineGroup(state.outer, color, outline) + renderLineGroup(state.inner, color, outline) + dotSvg + fallbackDot;
+    renderLineGroup(state.inner, color, outline) + dotSvg + renderLineGroup(state.outer, color, outline) + fallbackDot;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}" width="${SIZE}" height="${SIZE}">
     <rect x="0" y="0" width="${SIZE}" height="${SIZE}" fill="${background}" />

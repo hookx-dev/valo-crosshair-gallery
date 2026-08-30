@@ -139,8 +139,9 @@ export function CrosshairPreview({
       )}
 
       {/* zoomは四隅のコーナーブラケットには適用せず、クロスヘア本体だけを中心基準で拡大する */}
+      {/* vcrdb.netの描画順は inner→dot→outer(この順で後勝ち)。ドットが大きい/gapが狭い設定では
+          重なった部分の見た目が順序で変わるため、当サイトも同じ順序で描く。 */}
       <g transform={`translate(${offsetX} ${offsetY}) scale(${zoom}) translate(${-CENTER} ${-CENTER})`}>
-        {renderLineGroup(state.outer, color, outline, "outer")}
         {renderLineGroup(state.inner, color, outline, "inner")}
 
         {state.dotEnabled && (
@@ -149,6 +150,8 @@ export function CrosshairPreview({
             <rect {...dotRect} fill={color} opacity={state.dotOpacity} />
           </>
         )}
+
+        {renderLineGroup(state.outer, color, outline, "outer")}
 
         {!state.inner.enabled && !state.outer.enabled && !state.dotEnabled && (
           <rect x={CENTER - 3} y={CENTER - 3} width={6} height={6} fill={color} />
