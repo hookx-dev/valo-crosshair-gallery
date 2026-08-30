@@ -41,6 +41,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        <Script
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "0ae9667a3c2049da9abf3067e70702f6"}'
+          strategy="afterInteractive"
+        />
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />
