@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "seed": "tsx seed.ts"
+    "seed": "tsx seed.ts",
+    "migrate:approve-legacy": "tsx migrate-approve-legacy.ts"
   },
   "dependencies": {
     "firebase": "^12.18.0",

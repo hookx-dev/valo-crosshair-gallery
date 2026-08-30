@@ -14,7 +14,7 @@ interface MockCrosshair {
   category: "pro" | "meme" | "practical";
   proPlayerName: string | null;
   tags: string[];
-  imageUrl: string;
+  status: "pending" | "approved";
   createdAt: string;
 }
 

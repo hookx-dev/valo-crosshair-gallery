@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 一般公開ギャラリー: 承認済み(status == "approved")の投稿のみ誰でも読み取り可能。
+    // 承認待ち(status == "pending")のドキュメントは一覧・詳細どちらからも見えない。
+    // 書き込みはクライアントSDKからは常に禁止(投稿はTurnstile検証を経たCloudflare Pages
+    // FunctionsからサービスアカウントのOAuthトークンで行うため、この経路は関係ない)。
+    match /crosshairs/{crosshairId} {
+      allow read: if resource.data.status == "approved";
+      allow write: if false;
+    }
+
+    // それ以外のコレクションはデフォルトで全拒否。
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

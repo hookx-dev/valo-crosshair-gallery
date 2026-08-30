@@ -19,15 +19,35 @@ const STATIC_PATHS = [
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
+// 承認待ちの投稿はサイトマップに含めない(検索エンジンに未審査コンテンツを公開しないため)。
 async function crosshairIds(): Promise<string[]> {
   if (!PROJECT_ID) return [];
   try {
     const res = await fetch(
-      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/crosshairs?pageSize=300`
+      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents:runQuery`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          structuredQuery: {
+            from: [{ collectionId: "crosshairs" }],
+            where: {
+              fieldFilter: {
+                field: { fieldPath: "status" },
+                op: "EQUAL",
+                value: { stringValue: "approved" },
+              },
+            },
+            limit: 300,
+          },
+        }),
+      }
     );
     if (!res.ok) return [];
-    const data: { documents?: { name: string }[] } = await res.json();
-    return (data.documents ?? []).map((doc) => doc.name.split("/").pop() as string);
+    const rows: { document?: { name: string } }[] = await res.json();
+    return rows
+      .filter((row) => row.document)
+      .map((row) => row.document!.name.split("/").pop() as string);
   } catch {
     return [];
   }

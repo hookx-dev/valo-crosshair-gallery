@@ -8,6 +8,6 @@ export interface Crosshair {
   proPlayerName: string | null;
   submittedBy: string | null;
   tags: string[];
-  imageUrl: string;
+  status: "pending" | "approved";
   createdAt: string;
 }

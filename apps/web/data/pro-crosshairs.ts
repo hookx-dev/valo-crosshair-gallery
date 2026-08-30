@@ -12,7 +12,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "TenZ",
     submittedBy: null,
     tags: ["pro", "cyan", "small"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-tenz.png",
+    status: "approved",
     createdAt: "2026-08-01T00:00:00.000Z",
   },
   {
@@ -23,7 +23,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "aspas",
     submittedBy: null,
     tags: ["pro", "white", "classic"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-aspas.png",
+    status: "approved",
     createdAt: "2026-08-01T00:00:00.000Z",
   },
   {
@@ -34,7 +34,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "Demon1",
     submittedBy: null,
     tags: ["pro", "white", "classic"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-demon1.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -45,7 +45,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "Derke",
     submittedBy: null,
     tags: ["pro", "white", "wide"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-derke.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -56,7 +56,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "Alfajer",
     submittedBy: null,
     tags: ["pro", "cyan", "small"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-alfajer.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -67,7 +67,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "Chronicle",
     submittedBy: null,
     tags: ["pro", "red", "small"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-chronicle.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -78,7 +78,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "yay",
     submittedBy: null,
     tags: ["pro", "white", "dot"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-yay.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -89,7 +89,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "Zekken",
     submittedBy: null,
     tags: ["pro", "green", "dot"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-zekken.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -100,7 +100,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: "Laz",
     submittedBy: null,
     tags: ["pro", "green", "small"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/pro-laz.png",
+    status: "approved",
     createdAt: "2026-08-12T00:00:00.000Z",
   },
   {
@@ -111,7 +111,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "huge", "yellow"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-001.png",
+    status: "approved",
     createdAt: "2026-08-05T00:00:00.000Z",
   },
   {
@@ -122,7 +122,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "colorful"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-002.png",
+    status: "approved",
     createdAt: "2026-08-05T00:00:00.000Z",
   },
   {
@@ -133,7 +133,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "eyes", "white"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-003.png",
+    status: "approved",
     createdAt: "2026-08-15T00:00:00.000Z",
   },
   {
@@ -144,7 +144,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "cross", "huge"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-004.png",
+    status: "approved",
     createdAt: "2026-08-15T00:00:00.000Z",
   },
   {
@@ -155,7 +155,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "colorful", "particle"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-005.png",
+    status: "approved",
     createdAt: "2026-08-15T00:00:00.000Z",
   },
   {
@@ -166,7 +166,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "experimental", "green"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-006.png",
+    status: "approved",
     createdAt: "2026-08-15T00:00:00.000Z",
   },
   {
@@ -177,7 +177,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["meme", "dual", "pink"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/meme-007.png",
+    status: "approved",
     createdAt: "2026-08-28T00:00:00.000Z",
   },
   {
@@ -188,7 +188,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "white", "minimal"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-001.png",
+    status: "approved",
     createdAt: "2026-08-10T00:00:00.000Z",
   },
   {
@@ -199,7 +199,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "dot", "precise"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-002.png",
+    status: "approved",
     createdAt: "2026-08-10T00:00:00.000Z",
   },
   {
@@ -210,7 +210,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "tiny", "dot"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-003.png",
+    status: "approved",
     createdAt: "2026-08-18T00:00:00.000Z",
   },
   {
@@ -221,7 +221,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "thin", "minimal"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-004.png",
+    status: "approved",
     createdAt: "2026-08-18T00:00:00.000Z",
   },
   {
@@ -232,7 +232,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "cyan", "visible"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-005.png",
+    status: "approved",
     createdAt: "2026-08-18T00:00:00.000Z",
   },
   {
@@ -243,7 +243,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "thin", "precise"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-006.png",
+    status: "approved",
     createdAt: "2026-08-18T00:00:00.000Z",
   },
   {
@@ -254,7 +254,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "outline", "contrast"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-007.png",
+    status: "approved",
     createdAt: "2026-08-18T00:00:00.000Z",
   },
   {
@@ -265,7 +265,7 @@ export const proCrosshairs: Crosshair[] = [
     proPlayerName: null,
     submittedBy: null,
     tags: ["practical", "white", "precise"],
-    imageUrl: "https://r2-assets.example.com/crosshairs/practical-008.png",
+    status: "approved",
     createdAt: "2026-08-30T00:00:00.000Z",
   },
 ];

@@ -1,3 +1,5 @@
+import { firestoreDocsUrl, getGoogleAccessToken, toFirestoreFields } from "./_lib/firestoreAdmin";
+
 interface Env {
   TURNSTILE_SECRET_KEY: string;
   // ブラウザ用のビルド時設定(NEXT_PUBLIC_FIREBASE_*)を流用し、
@@ -5,6 +7,8 @@ interface Env {
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: string;
   FIREBASE_CLIENT_EMAIL: string;
   FIREBASE_PRIVATE_KEY: string;
+  // 未バインドでも動作するようにoptional扱いにする(スパム対策は必須ではなく多層防御の一つ)。
+  RATE_LIMIT_KV?: KVNamespace;
 }
 
 interface SubmitBody {
@@ -19,8 +23,18 @@ interface SubmitBody {
 const CODE_PATTERN = /^0;.{5,200}$/;
 const SUBMITTABLE_CATEGORIES = ["meme", "practical"];
 
+// 1つのIPから許容する投稿数(ウィンドウ内)。KV未設定時はスキップされる。
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_SECONDS = 60 * 60; // 1時間
+
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
+
+  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+  const rateLimited = await isRateLimited(env, ip);
+  if (rateLimited) {
+    return json({ error: "rate_limited" }, 429);
+  }
 
   let body: SubmitBody;
   try {
@@ -62,7 +76,11 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   let accessToken: string;
   try {
-    accessToken = await getGoogleAccessToken(env);
+    accessToken = await getGoogleAccessToken({
+      projectId: env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      clientEmail: env.FIREBASE_CLIENT_EMAIL,
+      privateKey: env.FIREBASE_PRIVATE_KEY,
+    });
   } catch {
     return json({ error: "auth_failed" }, 500);
   }
@@ -76,14 +94,13 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     proPlayerName: null,
     submittedBy: submittedBy || "匿名",
     tags,
-    imageUrl: "",
+    // 公開ギャラリーには承認後のみ表示される(モデレーション用)。
+    status: "pending",
     createdAt: new Date().toISOString(),
   };
 
   const firestoreRes = await fetch(
-    `https://firestore.googleapis.com/v1/projects/${env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/databases/(default)/documents/crosshairs?documentId=${encodeURIComponent(
-      id
-    )}`,
+    `${firestoreDocsUrl(env.NEXT_PUBLIC_FIREBASE_PROJECT_ID, "/crosshairs")}?documentId=${encodeURIComponent(id)}`,
     {
       method: "POST",
       headers: {
@@ -98,7 +115,28 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: "firestore_write_failed" }, 502);
   }
 
-  return json({ ok: true, crosshair });
+  await recordSubmission(env, ip);
+
+  return json({
+    ok: true,
+    crosshair,
+    message: "投稿を受け付けました。運営の確認後にギャラリーへ公開されます。",
+  });
+}
+
+async function isRateLimited(env: Env, ip: string): Promise<boolean> {
+  if (!env.RATE_LIMIT_KV || ip === "unknown") return false;
+  const raw = await env.RATE_LIMIT_KV.get(`submit:${ip}`);
+  const count = raw ? Number(raw) : 0;
+  return count >= RATE_LIMIT_MAX;
+}
+
+async function recordSubmission(env: Env, ip: string): Promise<void> {
+  if (!env.RATE_LIMIT_KV || ip === "unknown") return;
+  const key = `submit:${ip}`;
+  const raw = await env.RATE_LIMIT_KV.get(key);
+  const count = raw ? Number(raw) : 0;
+  await env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: RATE_LIMIT_WINDOW_SECONDS });
 }
 
 function json(data: unknown, status = 200): Response {
@@ -121,98 +159,4 @@ async function verifyTurnstile(token: string, secret: string, ip: string | null)
   });
   const data = (await res.json()) as { success: boolean };
   return data.success === true;
-}
-
-// --- Firestore REST field encoding ---
-function toFirestoreFields(obj: Record<string, unknown>): Record<string, unknown> {
-  const fields: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(obj)) {
-    fields[key] = toFirestoreValue(value);
-  }
-  return fields;
-}
-
-function toFirestoreValue(value: unknown): unknown {
-  if (value === null || value === undefined) return { nullValue: null };
-  if (typeof value === "string") return { stringValue: value };
-  if (typeof value === "number") return { doubleValue: value };
-  if (typeof value === "boolean") return { booleanValue: value };
-  if (Array.isArray(value)) return { arrayValue: { values: value.map(toFirestoreValue) } };
-  throw new Error("Unsupported Firestore value type");
-}
-
-// --- Google service-account JWT bearer flow (Workers-runtime compatible, no SDK) ---
-async function getGoogleAccessToken(env: Env): Promise<string> {
-  const now = Math.floor(Date.now() / 1000);
-  const header = { alg: "RS256", typ: "JWT" };
-  const claim = {
-    iss: cleanEnvValue(env.FIREBASE_CLIENT_EMAIL),
-    scope: "https://www.googleapis.com/auth/datastore",
-    aud: "https://oauth2.googleapis.com/token",
-    exp: now + 3600,
-    iat: now,
-  };
-
-  const encoder = new TextEncoder();
-  const headerB64 = base64url(encoder.encode(JSON.stringify(header)));
-  const claimB64 = base64url(encoder.encode(JSON.stringify(claim)));
-  const unsigned = `${headerB64}.${claimB64}`;
-
-  const key = await importPrivateKey(env.FIREBASE_PRIVATE_KEY);
-  const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, encoder.encode(unsigned));
-  const jwt = `${unsigned}.${base64url(signature)}`;
-
-  const res = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      assertion: jwt,
-    }).toString(),
-  });
-
-  if (!res.ok) {
-    throw new Error(`OAuth token exchange failed: ${await res.text()}`);
-  }
-
-  const data = (await res.json()) as { access_token: string };
-  return data.access_token;
-}
-
-function base64url(bytes: ArrayBuffer | Uint8Array): string {
-  const buf = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
-  let str = "";
-  for (const b of buf) str += String.fromCharCode(b);
-  return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
-// サービスアカウントJSONの値をそのまま(末尾のカンマや前後の引用符ごと)貼り付けても
-// 動くように、Cloudflareの環境変数値からPEM本体を安全に取り出す。
-function cleanEnvValue(raw: string): string {
-  let s = raw.trim();
-  s = s.replace(/,\s*$/, ""); // JSONフィールドをそのままコピーした場合の末尾カンマ
-  if (s.startsWith('"') && s.endsWith('"')) {
-    s = s.slice(1, -1);
-  }
-  return s.trim();
-}
-
-async function importPrivateKey(pem: string): Promise<CryptoKey> {
-  const trimmed = cleanEnvValue(pem);
-  const normalized = trimmed.replace(/\\n/g, "\n");
-  const pemContents = normalized
-    .replace("-----BEGIN PRIVATE KEY-----", "")
-    .replace("-----END PRIVATE KEY-----", "")
-    .replace(/\s+/g, "");
-  if (!pemContents) {
-    throw new Error("FIREBASE_PRIVATE_KEY is empty or malformed");
-  }
-  const binaryDer = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0));
-  return crypto.subtle.importKey(
-    "pkcs8",
-    binaryDer,
-    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
 }

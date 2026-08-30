@@ -7,7 +7,7 @@
     "proPlayerName": "TenZ",
     "submittedBy": null,
     "tags": ["pro", "cyan", "small"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-tenz.png",
+    "status": "approved",
     "createdAt": "2026-08-01T00:00:00.000Z"
   },
   {
@@ -18,7 +18,7 @@
     "proPlayerName": "aspas",
     "submittedBy": null,
     "tags": ["pro", "white", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-aspas.png",
+    "status": "approved",
     "createdAt": "2026-08-01T00:00:00.000Z"
   },
   {
@@ -29,7 +29,7 @@
     "proPlayerName": "Demon1",
     "submittedBy": null,
     "tags": ["pro", "white", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-demon1.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -40,7 +40,7 @@
     "proPlayerName": "Derke",
     "submittedBy": null,
     "tags": ["pro", "white", "wide"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-derke.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -51,7 +51,7 @@
     "proPlayerName": "Alfajer",
     "submittedBy": null,
     "tags": ["pro", "cyan", "small"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-alfajer.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -62,7 +62,7 @@
     "proPlayerName": "Chronicle",
     "submittedBy": null,
     "tags": ["pro", "red", "small"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-chronicle.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -73,7 +73,7 @@
     "proPlayerName": "yay",
     "submittedBy": null,
     "tags": ["pro", "white", "dot"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-yay.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -84,7 +84,7 @@
     "proPlayerName": "Zekken",
     "submittedBy": null,
     "tags": ["pro", "green", "dot"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-zekken.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -95,7 +95,7 @@
     "proPlayerName": "Laz",
     "submittedBy": null,
     "tags": ["pro", "green", "small"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-laz.png",
+    "status": "approved",
     "createdAt": "2026-08-12T00:00:00.000Z"
   },
   {
@@ -106,7 +106,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "pink", "colorful"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -117,7 +117,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "green", "huge"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -128,7 +128,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "red", "shuriken"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -139,7 +139,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "green", "game"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -150,7 +150,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "red", "dot"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -161,7 +161,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "red", "circle"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -172,7 +172,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "cross"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -183,7 +183,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "yellow", "huge"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -194,7 +194,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "cyan", "diamond"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -205,7 +205,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "pink", "flower"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -216,7 +216,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "pink", "huge"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -227,7 +227,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "cyan", "game"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -238,7 +238,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "cyan", "dot", "tiny"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -249,7 +249,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "green", "dot"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -260,7 +260,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "cyan", "classic"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -271,7 +271,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "green", "cross"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -282,7 +282,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "white", "precise"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -293,7 +293,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "white", "minimal", "dot"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -304,7 +304,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "green", "minimal"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -315,7 +315,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "white", "minimal"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-29T00:00:00.000Z"
   },
   {
@@ -326,7 +326,7 @@
     "proPlayerName": "Shroud",
     "submittedBy": null,
     "tags": ["pro", "yellow", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-shroud.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -337,7 +337,7 @@
     "proPlayerName": "Wardell",
     "submittedBy": null,
     "tags": ["pro", "cyan", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-wardell.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -348,7 +348,7 @@
     "proPlayerName": "Hiko",
     "submittedBy": null,
     "tags": ["pro", "green", "dot"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-hiko.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -359,7 +359,7 @@
     "proPlayerName": "dapr",
     "submittedBy": null,
     "tags": ["pro", "green", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-dapr.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -370,7 +370,7 @@
     "proPlayerName": "Marved",
     "submittedBy": null,
     "tags": ["pro", "green", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-marved.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -381,7 +381,7 @@
     "proPlayerName": "PANcada",
     "submittedBy": null,
     "tags": ["pro", "green", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-pancada.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -392,7 +392,7 @@
     "proPlayerName": "Saadhak",
     "submittedBy": null,
     "tags": ["pro", "green", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-saadhak.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -403,7 +403,7 @@
     "proPlayerName": "neT",
     "submittedBy": null,
     "tags": ["pro", "green", "precise"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-net.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -414,7 +414,7 @@
     "proPlayerName": "valyn",
     "submittedBy": null,
     "tags": ["pro", "white", "minimal"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-valyn.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -425,7 +425,7 @@
     "proPlayerName": "JonahP",
     "submittedBy": null,
     "tags": ["pro", "cyan", "classic"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-jonahp.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -436,7 +436,7 @@
     "proPlayerName": "Sayaplayer",
     "submittedBy": null,
     "tags": ["pro", "green", "precise"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-sayaplayer.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -447,7 +447,7 @@
     "proPlayerName": "trent",
     "submittedBy": null,
     "tags": ["pro", "cyan", "minimal"],
-    "imageUrl": "https://r2-assets.example.com/crosshairs/pro-trent.png",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -458,7 +458,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "red", "clown"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -469,7 +469,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "red", "wheel"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -480,7 +480,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "red", "medkit"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -491,7 +491,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "hashtag"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -502,7 +502,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "windows"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -513,7 +513,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "burger"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -524,7 +524,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "star"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -535,7 +535,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "tictactoe"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -546,7 +546,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "mushroom"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -557,7 +557,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["meme", "white", "globe"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -568,7 +568,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "yellow", "tiny"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -579,7 +579,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "green", "dot", "minimal"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -590,7 +590,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "green", "precise"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -601,7 +601,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "white", "dot"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -612,7 +612,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "white", "small"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   },
   {
@@ -623,7 +623,7 @@
     "proPlayerName": null,
     "submittedBy": null,
     "tags": ["practical", "green", "thin"],
-    "imageUrl": "",
+    "status": "approved",
     "createdAt": "2026-08-30T00:00:00.000Z"
   }
 ]

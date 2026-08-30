@@ -10,17 +10,36 @@ const FALLBACK_METADATA = pageMetadata({
   description: "VALORANTのクロスヘア設定の詳細とインポートコード。",
 });
 
+// Firestore Security Rulesは承認済み(status == "approved")のみ読み取りを許可しており、
+// クエリのwhere句が無い素の一括リスト取得は拒否される。runQueryでstatusを明示的に絞り込む。
 export async function generateStaticParams() {
   if (!PROJECT_ID) return [];
   try {
     const res = await fetch(
-      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/crosshairs?pageSize=300`
+      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents:runQuery`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          structuredQuery: {
+            from: [{ collectionId: "crosshairs" }],
+            where: {
+              fieldFilter: {
+                field: { fieldPath: "status" },
+                op: "EQUAL",
+                value: { stringValue: "approved" },
+              },
+            },
+            limit: 300,
+          },
+        }),
+      }
     );
     if (!res.ok) return [];
-    const data: { documents?: { name: string }[] } = await res.json();
-    return (data.documents ?? []).map((doc) => ({
-      id: doc.name.split("/").pop() as string,
-    }));
+    const rows: { document?: { name: string } }[] = await res.json();
+    return rows
+      .filter((row) => row.document)
+      .map((row) => ({ id: row.document!.name.split("/").pop() as string }));
   } catch {
     return [];
   }
