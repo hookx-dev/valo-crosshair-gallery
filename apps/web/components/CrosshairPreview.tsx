@@ -54,13 +54,18 @@ function renderLineGroup(
 
   return (
     <g key={key}>
-      {outline.enabled && (
-        <g fill="#000000" opacity={outline.opacity}>
-          {rects.map(
-            (r, i) => r.width !== 0 && r.height !== 0 && <rect key={i} {...expandRect(r, outline.extraPx)} />
-          )}
-        </g>
-      )}
+      {/* vcrdb.netの実描画(canvas)はアームごとにstrokeRectを個別のglobalAlphaで呼ぶため、
+          輪郭同士が重なる箇所(gapが狭い/太さが大きい時)は半透明の黒が二重に重なって濃くなる。
+          <g opacity>でまとめて一括描画すると重なりが合成されず均一な薄さになってしまうため、
+          矩形1つずつに直接opacityを付けて同じ重ね塗りの挙動を再現する。 */}
+      {outline.enabled &&
+        rects.map(
+          (r, i) =>
+            r.width !== 0 &&
+            r.height !== 0 && (
+              <rect key={i} {...expandRect(r, outline.extraPx)} fill="#000000" opacity={outline.opacity} />
+            )
+        )}
       <g fill={color} opacity={line.opacity}>
         {rects.map((r, i) => (
           <rect key={i} {...r} />
