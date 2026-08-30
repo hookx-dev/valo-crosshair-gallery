@@ -17,14 +17,16 @@ function perpendicularOffset(thickness: number): number {
   return Math.floor(CENTER - thickness / 2);
 }
 
+// vcrdb.netの描画関数は right→left→bottom→top の順で1本ずつ「輪郭→塗り」のペアを描く。
+// この並び順が、隣り合うアーム同士がgapの狭さで重なった時にどちらが勝つかを決める。
 function armRects(gap: number, hLength: number, vLength: number, thickness: number): Rect[] {
   const perp = perpendicularOffset(thickness);
   const g = thickness % 2;
   return [
-    { x: CENTER - gap - hLength - g, y: perp, width: hLength, height: thickness },
-    { x: CENTER + gap, y: perp, width: hLength, height: thickness },
-    { x: perp, y: CENTER - gap - vLength - g, width: thickness, height: vLength },
-    { x: perp, y: CENTER + gap, width: thickness, height: vLength },
+    { x: CENTER + gap, y: perp, width: hLength, height: thickness }, // right
+    { x: CENTER - gap - hLength - g, y: perp, width: hLength, height: thickness }, // left
+    { x: perp, y: CENTER + gap, width: thickness, height: vLength }, // bottom
+    { x: perp, y: CENTER - gap - vLength - g, width: thickness, height: vLength }, // top
   ];
 }
 
@@ -37,6 +39,9 @@ function rectTag(r: Rect, fill: string, opacity: number): string {
   return `<rect x="${r.x}" y="${r.y}" width="${r.width}" height="${r.height}" fill="${fill}" opacity="${opacity}" />`;
 }
 
+// アーム1本ごとに「輪郭→塗り」を描いてから次のアームへ進む(CrosshairPreview.tsxのコメント参照)。
+// 4本ぶんをまとめて輪郭だけ先に描くと、隣接アームの重なりで常に塗りが勝ってしまい、
+// 実機のように輪郭が中心まで食い込む表現ができない。
 function renderLineGroup(
   line: LineState,
   color: string,
@@ -50,11 +55,13 @@ function renderLineGroup(
   const gap = Math.max(0, line.gap);
   const rects = armRects(gap, hLength, vLength, thickness);
 
-  const outlineSvg = outline.enabled
-    ? rects.map((r) => rectTag(expandRect(r, outline.extraPx), "#000000", outline.opacity)).join("")
-    : "";
-  const lineSvg = rects.map((r) => rectTag(r, color, line.opacity)).join("");
-  return outlineSvg + lineSvg;
+  return rects
+    .map((r) => {
+      if (r.width === 0 || r.height === 0) return "";
+      const outlineSvg = outline.enabled ? rectTag(expandRect(r, outline.extraPx), "#000000", outline.opacity) : "";
+      return outlineSvg + rectTag(r, color, line.opacity);
+    })
+    .join("");
 }
 
 export function buildCrosshairSvg(code: string, options?: { zoom?: number; background?: string }): string {

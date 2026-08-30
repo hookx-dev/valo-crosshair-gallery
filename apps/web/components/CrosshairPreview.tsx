@@ -23,14 +23,17 @@ function perpendicularOffset(thickness: number): number {
 // 内向き(中心に近い側)のアームは、太さが奇数のとき追加で1px分だけ余分にずれる。
 // vcrdb.netのソースコードに実際にあった補正で、理由までは公開されていないが、
 // 実機の見た目に合わせるためそのまま踏襲している。
+// vcrdb.netの描画関数は right→left→bottom→top の順で1本ずつ「塗り→輪郭」のペアを描く。
+// このアーム配列の並び順自体が、隣り合うアーム同士が重なった時にどちらが勝つかを決める
+// (後から描いたアームの輪郭が、先に描いたアームの塗りの上から黒く食い込む)。
 function armRects(gap: number, hLength: number, vLength: number, thickness: number): Rect[] {
   const perp = perpendicularOffset(thickness);
   const g = thickness % 2;
   return [
-    { x: CENTER - gap - hLength - g, y: perp, width: hLength, height: thickness }, // left
     { x: CENTER + gap, y: perp, width: hLength, height: thickness }, // right
-    { x: perp, y: CENTER - gap - vLength - g, width: thickness, height: vLength }, // top
+    { x: CENTER - gap - hLength - g, y: perp, width: hLength, height: thickness }, // left
     { x: perp, y: CENTER + gap, width: thickness, height: vLength }, // bottom
+    { x: perp, y: CENTER - gap - vLength - g, width: thickness, height: vLength }, // top
   ];
 }
 
@@ -52,25 +55,23 @@ function renderLineGroup(
   const gap = Math.max(0, line.gap);
   const rects = armRects(gap, hLength, vLength, thickness);
 
+  // vcrdb.netはアーム1本ごとに「輪郭(全周に付く)→塗り」を描いてから次のアームに進む。
+  // 4本ぶんをまとめて「輪郭だけ全部→塗りだけ全部」の順で描くと、隣接するアーム同士が
+  // gapの狭さで重なった時に必ず塗りが勝ってしまい、実機のように輪郭が中心まで食い込んで
+  // 見える表現ができない。1本ずつペアで描くことで、後から描くアーム(right→left→bottom→top
+  // の順で最後=top)の輪郭が手前のアームの塗りの上に正しく重なるようにする。
   return (
     <g key={key}>
-      {/* vcrdb.netの実描画(canvas)はアームごとにstrokeRectを個別のglobalAlphaで呼ぶため、
-          輪郭同士が重なる箇所(gapが狭い/太さが大きい時)は半透明の黒が二重に重なって濃くなる。
-          <g opacity>でまとめて一括描画すると重なりが合成されず均一な薄さになってしまうため、
-          矩形1つずつに直接opacityを付けて同じ重ね塗りの挙動を再現する。 */}
-      {outline.enabled &&
-        rects.map(
-          (r, i) =>
-            r.width !== 0 &&
-            r.height !== 0 && (
-              <rect key={i} {...expandRect(r, outline.extraPx)} fill="#000000" opacity={outline.opacity} />
-            )
-        )}
-      <g fill={color} opacity={line.opacity}>
-        {rects.map((r, i) => (
-          <rect key={i} {...r} />
-        ))}
-      </g>
+      {rects.map(
+        (r, i) =>
+          r.width !== 0 &&
+          r.height !== 0 && (
+            <g key={i}>
+              {outline.enabled && <rect {...expandRect(r, outline.extraPx)} fill="#000000" opacity={outline.opacity} />}
+              <rect {...r} fill={color} opacity={line.opacity} />
+            </g>
+          )
+      )}
     </g>
   );
 }
