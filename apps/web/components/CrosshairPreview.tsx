@@ -41,45 +41,6 @@ function expandRect(r: Rect, extraPx: number): Rect {
   return { x: r.x - extraPx, y: r.y - extraPx, width: r.width + extraPx * 2, height: r.height + extraPx * 2 };
 }
 
-// 中心からそのrectの最も遠い辺までの距離(px)。ズーム倍率の自動計算に使う。
-function rectHalfExtent(r: Rect): number {
-  return Math.max(Math.abs(r.x - CENTER), Math.abs(r.x + r.width - CENTER), Math.abs(r.y - CENTER), Math.abs(r.y + r.height - CENTER));
-}
-
-const AUTO_ZOOM_MAX = 3.5;
-const AUTO_ZOOM_EDGE_PADDING = 4;
-
-// クロスヘアの実際の広がり(inner/outer/ドット、輪郭ぶんの拡張込み)を計算し、
-// 枠からはみ出さない範囲でできるだけ大きく見えるズーム倍率を自動で決める。
-// gapが狭い/太さが小さい典型的なクロスヘアは大きく拡大され、
-// gap・lengthが大きい巨大なクロスヘアはクリッピングしないよう自動的にズームが抑えられる。
-function computeAutoZoom(
-  inner: LineState,
-  outer: LineState,
-  dotEnabled: boolean,
-  dotRect: Rect,
-  outlineExtraPx: number
-): number {
-  let maxExtent = 3; // 何も表示するものが無い場合のフォールバックドット(6x6)の半径
-
-  for (const line of [inner, outer]) {
-    if (!line.enabled) continue;
-    const hLength = Math.max(0, line.length);
-    const vLength = Math.max(0, line.verticalLength);
-    const thickness = Math.max(0, line.thickness);
-    const gap = Math.max(0, line.gap);
-    for (const r of armRects(gap, hLength, vLength, thickness)) {
-      maxExtent = Math.max(maxExtent, rectHalfExtent(expandRect(r, outlineExtraPx)));
-    }
-  }
-
-  if (dotEnabled) {
-    maxExtent = Math.max(maxExtent, rectHalfExtent(expandRect(dotRect, outlineExtraPx)));
-  }
-
-  return Math.min(AUTO_ZOOM_MAX, (CENTER - AUTO_ZOOM_EDGE_PADDING) / maxExtent);
-}
-
 function renderLineGroup(
   line: LineState,
   color: string,
@@ -122,15 +83,11 @@ export function CrosshairPreview({
   code,
   background,
   className = "h-20 w-20 shrink-0",
-  zoom,
   label = "クロスヘアのプレビュー",
 }: {
   code: string;
   background?: string;
   className?: string;
-  // 未指定の場合、枠からはみ出さない範囲で自動的に最大限ズームインする(computeAutoZoom参照)。
-  // 明示的に渡した場合はその値をそのまま使う(ビルダーの固定ズームなど)。
-  zoom?: number;
   // スクリーンリーダー向けの説明。クロスヘア名がわかる場合は呼び出し側から渡す。
   label?: string;
 }) {
@@ -146,10 +103,6 @@ export function CrosshairPreview({
   const dotOffset = CENTER - Math.ceil(dotSide / 2);
   const dotRect: Rect = { x: dotOffset, y: dotOffset, width: dotSide, height: dotSide };
 
-  const effectiveZoom =
-    zoom ??
-    computeAutoZoom(state.inner, state.outer, state.dotEnabled, dotRect, outline.enabled ? outline.extraPx : 0);
-
   return (
     <svg
       viewBox={`0 0 ${SIZE} ${SIZE}`}
@@ -164,10 +117,9 @@ export function CrosshairPreview({
       <path d="M118 102 V118 H102" fill="none" stroke="#2a3a45" strokeWidth="2" />
       <path d="M26 118 H10 V102" fill="none" stroke="#2a3a45" strokeWidth="2" />
 
-      {/* zoomは四隅のコーナーブラケットには適用せず、クロスヘア本体だけを中心基準で拡大する */}
       {/* vcrdb.netの描画順は inner→dot→outer(この順で後勝ち)。ドットが大きい/gapが狭い設定では
           重なった部分の見た目が順序で変わるため、当サイトも同じ順序で描く。 */}
-      <g transform={`translate(${CENTER} ${CENTER}) scale(${effectiveZoom}) translate(${-CENTER} ${-CENTER})`}>
+      <g>
         {renderLineGroup(state.inner, color, outline, "inner")}
 
         {state.dotEnabled && (

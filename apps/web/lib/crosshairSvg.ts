@@ -64,8 +64,7 @@ function renderLineGroup(
     .join("");
 }
 
-export function buildCrosshairSvg(code: string, options?: { zoom?: number; background?: string }): string {
-  const zoom = options?.zoom ?? 2.2;
+export function buildCrosshairSvg(code: string, options?: { background?: string }): string {
   const background = options?.background ?? DEFAULT_PREVIEW_BACKGROUND;
   const state = parseCrosshairCode(code);
   const color = colorToHex(state.color, state.customHex);
@@ -101,7 +100,7 @@ export function buildCrosshairSvg(code: string, options?: { zoom?: number; backg
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}" width="${SIZE}" height="${SIZE}">
     <rect x="0" y="0" width="${SIZE}" height="${SIZE}" fill="${background}" />
     ${corners}
-    <g transform="translate(${CENTER} ${CENTER}) scale(${zoom}) translate(${-CENTER} ${-CENTER})">
+    <g>
       ${body}
     </g>
   </svg>`;

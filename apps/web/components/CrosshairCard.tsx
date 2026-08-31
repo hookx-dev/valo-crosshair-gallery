@@ -13,14 +13,11 @@ const CATEGORY_META: Record<string, { label: string; accent: string; text: strin
 export function CrosshairCard({
   crosshair,
   previewClassName = "h-32 w-32 shrink-0",
-  // 未指定ならCrosshairPreview側で自動ズーム(はみ出さない範囲で最大化)を使う。
-  previewZoom,
   // trueの場合、プレビュー画像の下にタイトルを配置する(横並びだと長い名前が見切れるため)。
   stacked = false,
 }: {
   crosshair: Crosshair;
   previewClassName?: string;
-  previewZoom?: number;
   stacked?: boolean;
 }) {
   const meta = CATEGORY_META[crosshair.category];
@@ -36,7 +33,6 @@ export function CrosshairCard({
         <CrosshairPreview
           code={crosshair.code}
           className={previewClassName}
-          zoom={previewZoom}
           label={`${crosshair.name}のプレビュー`}
         />
         <div className={stacked ? "flex w-full min-w-0 flex-col items-center gap-1" : "flex min-w-0 flex-col gap-1"}>

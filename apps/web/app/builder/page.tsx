@@ -284,7 +284,7 @@ function Builder() {
         {/* --- Preview + code --- */}
         <div className="flex flex-col gap-4 lg:sticky lg:top-20 lg:self-start">
           <div className="clip-corner flex flex-col items-center gap-4 border border-valo-line bg-valo-panel p-6">
-            <CrosshairPreview code={code} className="h-44 w-44 shrink-0" zoom={2.2} />
+            <CrosshairPreview code={code} className="h-44 w-44 shrink-0" />
           </div>
 
           <div className="clip-corner flex flex-col gap-3 border border-valo-line bg-valo-panel p-5">
