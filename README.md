@@ -80,10 +80,16 @@ npm run migrate:approve-legacy -- --apply   # 確認後、実際に反映
 `ADMIN_SECRET` はヘッダー照合による簡易的な保護であり、Basic認証やSSOの代替ではない点に注意
 （社内向け・小規模運用を想定）。定期的なローテーションを推奨する。
 
-### 投稿のレート制限(任意・推奨)
+### レート制限(任意・推奨)
 
-`functions/api/submit.ts` はCloudflare KVネームスペース `RATE_LIMIT_KV` がバインドされていれば、
-同一IPからの投稿を1時間あたり5件までに制限する。未設定でも投稿機能自体は動作する(制限なし)。
+Cloudflare KVネームスペース `RATE_LIMIT_KV` がバインドされていれば、以下のエンドポイントが
+同一IP単位でレート制限される。未設定でもすべて動作する(制限なし)。
+
+| エンドポイント | 制限内容 |
+|---|---|
+| `functions/api/submit.ts` | 投稿を1時間あたり5件まで |
+| `functions/api/admin/pending.ts`・`admin/moderate.ts` | `ADMIN_SECRET`の認証失敗を15分あたり10回まで(総当たり対策) |
+| `functions/api/crosshair-image.ts` | 画像生成(WASMレンダリング)を1時間あたり60件まで(CPU濫用対策) |
 
 1. Cloudflareダッシュボード「Workers & Pages > KV」でネームスペースを作成
 2. 対象のPagesプロジェクトの「Settings > Functions > KV namespace bindings」で
@@ -139,7 +145,7 @@ Discord Developer Portalの「Interactions Endpoint URL」に設定すれば疎�
 | `DISCORD_APPLICATION_ID` | コマンド登録・API呼び出し | `apps/bot/.env`, `apps/bot/.dev.vars` (本番は `wrangler secret`) |
 | `DISCORD_BOT_TOKEN` | コマンド登録・API呼び出し | `apps/bot/.env`, `apps/bot/.dev.vars` (本番は `wrangler secret`) |
 | `ADMIN_SECRET` | `/admin` ページ・承認APIの認証 | Cloudflare Pages環境変数(Encrypted推奨) |
-| `RATE_LIMIT_KV` | 投稿のレート制限(任意) | Cloudflare Pages KV namespace binding |
+| `RATE_LIMIT_KV` | 投稿・管理者認証・画像生成のレート制限(任意) | Cloudflare Pages KV namespace binding |
 | `TURNSTILE_SECRET_KEY` | 投稿フォームのBot対策 | Cloudflare Pages環境変数(Encrypted) |
 
 ## 現在の状況

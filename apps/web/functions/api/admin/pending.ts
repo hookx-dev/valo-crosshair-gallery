@@ -1,18 +1,32 @@
 import { fromFirestoreFields, firestoreDocsUrl, getGoogleAccessToken, timingSafeEqual } from "../_lib/firestoreAdmin";
+import { clientIp, isRateLimited, recordHit } from "../_lib/rateLimit";
 
 interface Env {
   ADMIN_SECRET: string;
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: string;
   FIREBASE_CLIENT_EMAIL: string;
   FIREBASE_PRIVATE_KEY: string;
+  // 未バインドでも動作するようにoptional扱いにする(ADMIN_SECRETの総当たり対策)。
+  RATE_LIMIT_KV?: KVNamespace;
 }
+
+// ADMIN_SECRETの総当たりを抑止するための、認証失敗回数の上限(ウィンドウ内)。
+const AUTH_FAIL_MAX = 10;
+const AUTH_FAIL_WINDOW_SECONDS = 15 * 60; // 15分
 
 // 承認待ち(status == "pending")の投稿一覧を返す(管理ページから利用)。
 export async function onRequestGet(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
 
+  const ip = clientIp(request);
+  const rateLimitKey = `admin-auth-fail:${ip}`;
+  if (await isRateLimited(env.RATE_LIMIT_KV, ip, rateLimitKey, AUTH_FAIL_MAX)) {
+    return json({ error: "rate_limited" }, 429);
+  }
+
   const secret = request.headers.get("x-admin-secret") ?? "";
   if (!env.ADMIN_SECRET || !timingSafeEqual(secret, env.ADMIN_SECRET)) {
+    await recordHit(env.RATE_LIMIT_KV, ip, rateLimitKey, AUTH_FAIL_WINDOW_SECONDS);
     return json({ error: "unauthorized" }, 401);
   }
 

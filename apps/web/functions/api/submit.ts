@@ -1,4 +1,5 @@
 import { firestoreDocsUrl, getGoogleAccessToken, toFirestoreFields } from "./_lib/firestoreAdmin";
+import { clientIp, isRateLimited, recordHit } from "./_lib/rateLimit";
 
 interface Env {
   TURNSTILE_SECRET_KEY: string;
@@ -30,8 +31,8 @@ const RATE_LIMIT_WINDOW_SECONDS = 60 * 60; // 1時間
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
 
-  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-  const rateLimited = await isRateLimited(env, ip);
+  const ip = clientIp(request);
+  const rateLimited = await isRateLimited(env.RATE_LIMIT_KV, ip, `submit:${ip}`, RATE_LIMIT_MAX);
   if (rateLimited) {
     return json({ error: "rate_limited" }, 429);
   }
@@ -115,28 +116,13 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: "firestore_write_failed" }, 502);
   }
 
-  await recordSubmission(env, ip);
+  await recordHit(env.RATE_LIMIT_KV, ip, `submit:${ip}`, RATE_LIMIT_WINDOW_SECONDS);
 
   return json({
     ok: true,
     crosshair,
     message: "投稿を受け付けました。運営の確認後にギャラリーへ公開されます。",
   });
-}
-
-async function isRateLimited(env: Env, ip: string): Promise<boolean> {
-  if (!env.RATE_LIMIT_KV || ip === "unknown") return false;
-  const raw = await env.RATE_LIMIT_KV.get(`submit:${ip}`);
-  const count = raw ? Number(raw) : 0;
-  return count >= RATE_LIMIT_MAX;
-}
-
-async function recordSubmission(env: Env, ip: string): Promise<void> {
-  if (!env.RATE_LIMIT_KV || ip === "unknown") return;
-  const key = `submit:${ip}`;
-  const raw = await env.RATE_LIMIT_KV.get(key);
-  const count = raw ? Number(raw) : 0;
-  await env.RATE_LIMIT_KV.put(key, String(count + 1), { expirationTtl: RATE_LIMIT_WINDOW_SECONDS });
 }
 
 function json(data: unknown, status = 200): Response {
