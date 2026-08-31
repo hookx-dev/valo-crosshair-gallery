@@ -204,34 +204,22 @@ export function serializeCrosshairState(state: CrosshairState): string {
 
   parts.push("0b", state.inner.enabled ? 1 : 0);
   if (state.inner.enabled) {
-    parts.push(
-      "0l",
-      state.inner.length,
-      "0v",
-      state.inner.verticalLength,
-      "0t",
-      state.inner.thickness,
-      "0o",
-      state.inner.gap,
-      "0a",
-      state.inner.opacity
-    );
+    parts.push("0l", state.inner.length);
+    // parseCrosshairCodeは"0g"が明示的に"1"の時だけ"0v"を読むため、垂直方向が水平方向と
+    // 違う場合のみ両方出力する(揃っている場合まで出すと無駄にコードが長くなるだけ)。
+    if (state.inner.verticalLength !== state.inner.length) {
+      parts.push("0v", state.inner.verticalLength, "0g", 1);
+    }
+    parts.push("0t", state.inner.thickness, "0o", state.inner.gap, "0a", state.inner.opacity);
   }
 
   parts.push("1b", state.outer.enabled ? 1 : 0);
   if (state.outer.enabled) {
-    parts.push(
-      "1l",
-      state.outer.length,
-      "1v",
-      state.outer.verticalLength,
-      "1t",
-      state.outer.thickness,
-      "1o",
-      state.outer.gap,
-      "1a",
-      state.outer.opacity
-    );
+    parts.push("1l", state.outer.length);
+    if (state.outer.verticalLength !== state.outer.length) {
+      parts.push("1v", state.outer.verticalLength, "1g", 1);
+    }
+    parts.push("1t", state.outer.thickness, "1o", state.outer.gap, "1a", state.outer.opacity);
   }
 
   return parts.join(";");
