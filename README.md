@@ -1,4 +1,25 @@
-# VALORANT Crosshair Gallery + Discord Bot
+# VALO Crosshair Gallery
+
+VALORANTのクロスヘア設定を検索・共有できるギャラリーサイトと、Discord上でクロスヘアを取得できるBotのモノレポです。ユーザーが投稿したクロスヘア設定はモデレーションを経てギャラリーに公開され、Discord Botからも同じデータを参照できます。
+
+🔗 https://valorant-crosshair-hub.pages.dev
+
+## 主な機能
+
+- クロスヘア設定のカテゴリ・キーワード検索、ワンクリックコピー
+- クロスヘアビルダー（設定値からインポートコードを生成）
+- プロ選手の設定・使用デバイス一覧
+- ユーザー投稿 → 管理者承認制のモデレーションフロー（`/admin`）
+- Discord Bot（`/crosshair random`, `/crosshair pro`）で承認済みデータを取得
+- 投稿・管理者認証・画像生成のレート制限（Cloudflare KV、任意）
+
+## 技術スタック
+
+- **Web**: Next.js 14 / React 18 / TypeScript / Tailwind CSS（Cloudflare Pagesにデプロイ）
+- **Bot**: Cloudflare Workers（Discord Interactions API）
+- **データベース**: Firebase Firestore
+- **テスト**: Vitest
+- **CI**: GitHub Actions（PR/main pushごとにlint・build・typecheck）
 
 ## ディレクトリ構成
 
