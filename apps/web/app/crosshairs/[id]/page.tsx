@@ -5,6 +5,13 @@ import { pageMetadata } from "@/lib/pageMetadata";
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
+// このページの実データはクライアント側でFirestoreから取得するため、
+// generateStaticParams()はSEO用の事前生成のみを担う。NEXT_PUBLIC_FIREBASE_PROJECT_ID
+// が未設定のビルド環境(CI等)ではprerenderRoutesが0件になり、
+// `output: "export"` + 動的ルートの組み合わせでNext.jsがビルドエラーにするため、
+// revalidate: 0を明示してその必須チェックを無効化する。
+export const revalidate = 0;
+
 const FALLBACK_METADATA = pageMetadata({
   title: "クロスヘア詳細 | VALO Crosshair Gallery",
   description: "VALORANTのクロスヘア設定の詳細とインポートコード。",
