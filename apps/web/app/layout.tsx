@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Rajdhani, Inter } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AdsenseLoader } from "@/components/AdsenseLoader";
 import { pageMetadata, SITE_URL } from "@/lib/pageMetadata";
 import "./globals.css";
 
@@ -35,12 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col bg-valo-dark font-sans text-white">
-        <Script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        <AdsenseLoader />
         <Script
           type="module"
           src="https://static.cloudflareinsights.com/beacon.min.js"
